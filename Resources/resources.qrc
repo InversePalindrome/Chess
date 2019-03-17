@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Resources">
+        <file>InversePalindromeLogo.jpg</file>
+        <file>Icon.png</file>
+    </qresource>
+</RCC>

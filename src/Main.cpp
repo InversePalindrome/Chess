@@ -7,14 +7,26 @@ https://inversepalindrome.com/
 
 #include "MainWindow.hpp"
 
+#include <QTimer>
 #include <QApplication>
+#include <QSplashScreen>
 
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+
+    auto* splashScreen = new QSplashScreen(QPixmap(":/Resources/InversePalindromeLogo.jpg"), Qt::WindowStaysOnTopHint);
+    splashScreen->show();
+
+    MainWindow mainWindow;
+    mainWindow.setWindowTitle("Chess");
+    mainWindow.setMinimumSize(1600, 1600);
+
+    auto const SPLASH_TIME = 2000;
+
+    QTimer::singleShot(SPLASH_TIME, splashScreen, SLOT(close()));
+    QTimer::singleShot(SPLASH_TIME, &mainWindow, SLOT(show()));
 
     return a.exec();
 }
