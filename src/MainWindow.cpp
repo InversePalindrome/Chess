@@ -14,9 +14,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    connect(ui->singlePlayerButton, &QPushButton::clicked, [this](){ transitionToGame(); });
+    connect(ui->multiPlayerButton, &QPushButton::clicked, [this](){ transitionToGame(); });
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::transitionToGame()
+{
+    ui->stackWidget->setCurrentIndex(1);
 }

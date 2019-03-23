@@ -23,6 +23,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void transitionToGame();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="MainMenu">
      <widget class="QWidget" name="horizontalLayoutWidget">
@@ -68,7 +68,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="onePlayerButton">
+          <widget class="QPushButton" name="singlePlayerButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
              <horstretch>0</horstretch>
@@ -95,7 +95,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="twoPlayerButton">
+          <widget class="QPushButton" name="multiPlayerButton">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
              <horstretch>0</horstretch>
@@ -162,7 +162,18 @@
       </layout>
      </widget>
     </widget>
-    <widget class="QWidget" name="ChessBoard"/>
+    <widget class="QWidget" name="ChessBoard">
+     <widget class="QGraphicsView" name="graphicsView">
+      <property name="geometry">
+       <rect>
+        <x>190</x>
+        <y>630</y>
+        <width>371</width>
+        <height>291</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QToolBar" name="mainToolBar">

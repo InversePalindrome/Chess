@@ -16,10 +16,16 @@ INCLUDEPATH += $$PWD/include
 
 SOURCES += \
     src/Main.cpp \
-    src/MainWindow.cpp
+    src/MainWindow.cpp \
+    src/ChessScene.cpp \
+    src/ChessView.cpp \
+    src/ChessPiece.cpp
 
 HEADERS += \
-    include/MainWindow.hpp
+    include/MainWindow.hpp \
+    include/ChessScene.hpp \
+    include/ChessView.hpp \
+    include/ChessPiece.hpp
 
 FORMS += \
     UI/MainWindow.ui
