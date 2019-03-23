@@ -12,8 +12,6 @@ https://inversepalindrome.com/
 
 class ChessPiece : public QGraphicsPixmapItem
 {
-    Q_OBJECT
-
 public:
     explicit ChessPiece(QGraphicsItem* parent = nullptr);
 };

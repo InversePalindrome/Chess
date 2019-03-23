@@ -16,4 +16,9 @@ class ChessScene : public QGraphicsScene
 
 public:
     explicit ChessScene(QObject* parent = nullptr);
+
+protected:
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 };

@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="MainMenu">
      <widget class="QWidget" name="horizontalLayoutWidget">
@@ -163,15 +163,20 @@
      </widget>
     </widget>
     <widget class="QWidget" name="ChessBoard">
-     <widget class="QGraphicsView" name="graphicsView">
+     <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>190</x>
-        <y>630</y>
-        <width>371</width>
-        <height>291</height>
+        <x>10</x>
+        <y>10</y>
+        <width>521</width>
+        <height>511</height>
        </rect>
       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGraphicsView" name="chessView"/>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>

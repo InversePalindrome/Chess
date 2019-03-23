@@ -5,8 +5,11 @@ https://inversepalindrome.com/
 */
 
 
+#include "ChessScene.hpp"
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
+
+#include <QGraphicsView>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -27,4 +30,15 @@ MainWindow::~MainWindow()
 void MainWindow::transitionToGame()
 {
     ui->stackWidget->setCurrentIndex(1);
+
+    auto* scene = new ChessScene(ui->ChessBoard);
+
+    auto* view = ui->chessView;
+    view->setScene(scene);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setRenderHint(QPainter::Antialiasing);
+    view->setMouseTracking(true);
+    view->fitInView(scene->sceneRect());
+    view->show();
 }

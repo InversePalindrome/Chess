@@ -8,7 +8,8 @@ https://inversepalindrome.com/
 #include "ChessPiece.hpp"
 
 
-ChessPiece::ChessPiece(QGraphicsItem* parent)
+ChessPiece::ChessPiece(QGraphicsItem* parent) :
+    QGraphicsPixmapItem(parent)
 {
 
 }
