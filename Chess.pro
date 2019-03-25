@@ -18,14 +18,17 @@ SOURCES += \
     src/Main.cpp \
     src/MainWindow.cpp \
     src/ChessScene.cpp \
-    src/ChessPiece.cpp \
-    src/ChessBoard.cpp
+    src/ChessBoardGraphicsItem.cpp \
+    src/ChessBoard.cpp \
+    src/ChessPiece.cpp
 
 HEADERS += \
     include/MainWindow.hpp \
     include/ChessScene.hpp \
-    include/ChessPiece.hpp \
-    include/ChessBoard.hpp
+    include/ChessBoardGraphicsItem.hpp \
+    include/ChessBoard.hpp \
+    include/ChessConstants.hpp \
+    include/ChessPiece.hpp
 
 FORMS += \
     UI/MainWindow.ui

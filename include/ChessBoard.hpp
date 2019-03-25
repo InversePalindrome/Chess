@@ -7,24 +7,22 @@ https://inversepalindrome.com/
 
 #pragma once
 
-#include <QPainter>
-#include <QGraphicsItem>
+#include "ChessPiece.hpp"
+#include "ChessConstants.hpp"
+
+#include <array>
 
 
-class ChessBoard : public QGraphicsItem
-{
+class ChessBoard
+{  
 public:
-    explicit ChessBoard(QGraphicsItem* parent = nullptr);
+    ChessBoard();
 
-    virtual QRectF boundingRect() const override;
-    virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) override;
+    void resetBoard();
 
-    static constexpr int FILES = 8;
-    static constexpr int RANKS = 8;
-    static constexpr qreal SQUARE_SIZE = 64;
+    std::array<ChessPiece, Chess::RANKS>& operator[](const std::size_t index);
+    const std::array<ChessPiece, Chess::RANKS>& operator[](const std::size_t index) const;
 
 private:
-    QRectF rect;
-    QColor lightColor;
-    QColor darkColor;
+    std::array<std::array<ChessPiece, Chess::RANKS>, Chess::FILES> board;
 };

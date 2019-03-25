@@ -7,6 +7,8 @@ https://inversepalindrome.com/
 
 #pragma once
 
+#include "ChessBoard.hpp"
+
 #include <QMainWindow>
 
 
@@ -20,7 +22,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    MainWindow(ChessBoard& chessBoard, QWidget *parent = nullptr);
     ~MainWindow();
 
 public slots:
@@ -28,4 +30,6 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+
+    ChessBoard& chessBoard;
 };

@@ -7,11 +7,21 @@ https://inversepalindrome.com/
 
 #pragma once
 
-#include <QGraphicsPixmapItem>
+#include "ChessConstants.hpp"
+
+#include <cstddef>
+#include <functional>
 
 
-class ChessPiece : public QGraphicsPixmapItem
+struct ChessPiece
 {
-public:
-    explicit ChessPiece(QGraphicsItem* parent = nullptr);
+    Chess::Piece piece = Chess::Piece::None;
+    Chess::Color color = Chess::Color::Light;
+
+    bool operator==(const ChessPiece& chessPiece) const;
+};
+
+struct ChessPieceHash
+{
+    std::size_t operator()(const ChessPiece& chessPiece) const;
 };

@@ -12,9 +12,10 @@ https://inversepalindrome.com/
 #include <QGraphicsView>
 
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(ChessBoard& chessBoard, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    chessBoard(chessBoard)
 {
     ui->setupUi(this);
 
@@ -31,7 +32,7 @@ void MainWindow::transitionToGame()
 {
     ui->stackWidget->setCurrentIndex(1);
 
-    auto* scene = new ChessScene(ui->ChessBoard);
+    auto* scene = new ChessScene(chessBoard, ui->ChessBoard);
 
     auto* view = ui->chessView;
     view->setScene(scene);

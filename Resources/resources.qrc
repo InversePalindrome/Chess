@@ -2,5 +2,17 @@
     <qresource prefix="/Resources">
         <file>InversePalindromeLogo.jpg</file>
         <file>Icon.png</file>
+        <file>ChessPieces/DarkBishop.png</file>
+        <file>ChessPieces/DarkKing.png</file>
+        <file>ChessPieces/DarkKnight.png</file>
+        <file>ChessPieces/DarkPawn.png</file>
+        <file>ChessPieces/DarkQueen.png</file>
+        <file>ChessPieces/DarkRook.png</file>
+        <file>ChessPieces/LightBishop.png</file>
+        <file>ChessPieces/LightKing.png</file>
+        <file>ChessPieces/LightKnight.png</file>
+        <file>ChessPieces/LightPawn.png</file>
+        <file>ChessPieces/LightQueen.png</file>
+        <file>ChessPieces/LightRook.png</file>
     </qresource>
 </RCC>
