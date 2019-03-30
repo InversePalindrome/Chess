@@ -14,5 +14,6 @@
         <file>ChessPieces/LightPawn.png</file>
         <file>ChessPieces/LightQueen.png</file>
         <file>ChessPieces/LightRook.png</file>
+        <file>HomeIcon.png</file>
     </qresource>
 </RCC>

@@ -20,8 +20,8 @@ ChessBoardGraphicsItem::ChessBoardGraphicsItem(QGraphicsItem* parent) :
 
 QRectF ChessBoardGraphicsItem::boundingRect() const
 {  
-    return rect.marginsAdded(QMarginsF(Chess::SQUARE_SIZE / 2.0, Chess::SQUARE_SIZE / 2.0, Chess::SQUARE_SIZE / 2.0,
-                                       Chess::SQUARE_SIZE / 2.0));
+   return rect.marginsAdded(QMarginsF(Chess::SQUARE_SIZE / 2.0, Chess::SQUARE_SIZE / 2.0, Chess::SQUARE_SIZE / 2.0,
+                                      Chess::SQUARE_SIZE / 2.0));
 }
 
 void ChessBoardGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -54,7 +54,8 @@ void ChessBoardGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphics
     }
 
     auto font = painter->font();
-    font.setPointSizeF(font.pointSizeF() * 0.7);
+    font.setPointSizeF(font.pointSizeF() * 1.3);
+    font.setBold(true);
     painter->setFont(font);
 
     const QString fileText = "abcdefgh";
@@ -65,7 +66,8 @@ void ChessBoardGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphics
 
         for(const auto& item : horizontalItems)
         {
-            drawingRect = { rect.left() + (Chess::SQUARE_SIZE * j), item, Chess::SQUARE_SIZE, Chess::SQUARE_SIZE / 2.0 };
+            drawingRect = { rect.left() + static_cast<qreal>(Chess::SQUARE_SIZE * j),
+                          item, static_cast<qreal>(Chess::SQUARE_SIZE), Chess::SQUARE_SIZE / 2.0 };
 
             painter->drawText(drawingRect, Qt::AlignCenter, fileText[j]);
         }
@@ -77,7 +79,8 @@ void ChessBoardGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphics
 
         for(const auto& item : verticalItems)
         {
-            drawingRect = { item, rect.top() + (Chess::SQUARE_SIZE * i), Chess::SQUARE_SIZE / 2.0, Chess::SQUARE_SIZE };
+            drawingRect = { item, rect.top() + static_cast<qreal>(Chess::SQUARE_SIZE * i),
+                            Chess::SQUARE_SIZE / 2.0, static_cast<qreal>(Chess::SQUARE_SIZE) };
 
             painter->drawText(drawingRect, Qt::AlignCenter, QString::number(i + 1));
         }

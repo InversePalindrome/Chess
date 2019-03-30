@@ -18,21 +18,10 @@ MainWindow::MainWindow(ChessBoard& chessBoard, QWidget *parent) :
     chessBoard(chessBoard)
 {
     ui->setupUi(this);
+    ui->toolBar->setVisible(false);
+    ui->toolBar->addAction(QIcon(":/Resources/HomeIcon.png"), "Menu", [this](){ transitionToMenu(); });
 
-    connect(ui->singlePlayerButton, &QPushButton::clicked, [this](){ transitionToGame(); });
-    connect(ui->multiPlayerButton, &QPushButton::clicked, [this](){ transitionToGame(); });
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-void MainWindow::transitionToGame()
-{
-    ui->stackWidget->setCurrentIndex(1);
-
-    auto* scene = new ChessScene(chessBoard, ui->ChessBoard);
+    auto* scene = new ChessScene(chessBoard);
 
     auto* view = ui->chessView;
     view->setScene(scene);
@@ -40,6 +29,24 @@ void MainWindow::transitionToGame()
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setRenderHint(QPainter::Antialiasing);
     view->setMouseTracking(true);
-    view->fitInView(scene->sceneRect());
     view->show();
+
+    connect(ui->playButton, &QPushButton::clicked, [this](){ transitionToGame(); });
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::transitionToMenu()
+{
+    ui->stackWidget->setCurrentIndex(0);
+    ui->toolBar->setVisible(false);
+}
+
+void MainWindow::transitionToGame()
+{
+    ui->stackWidget->setCurrentIndex(1);
+    ui->toolBar->setVisible(true);
 }

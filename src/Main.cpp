@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
     MainWindow mainWindow(chessBoard);
     mainWindow.setWindowTitle("Chess");
-    mainWindow.setMinimumSize(1600, 1600);
+    mainWindow.setFixedSize(1600, 1600);
 
     auto const SPLASH_TIME = 2000;
 

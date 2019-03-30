@@ -26,6 +26,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void transitionToMenu();
     void transitionToGame();
 
 private:

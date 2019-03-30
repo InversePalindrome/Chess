@@ -56,7 +56,7 @@ void ChessScene::populateScene()
             if(piecesGraphicsMap.count(chessBoard[rank][file]))
             {
                 auto* graphicPiece = new QGraphicsPixmapItem(QPixmap(":/Resources/ChessPieces/"
-                                     + piecesGraphicsMap[chessBoard[rank][file]]).scaledToWidth(32));
+                                     + piecesGraphicsMap[chessBoard[rank][file]]).scaledToWidth(Chess::PIECE_SIZE));
 
                 graphicPiece->setPos(sceneRect().left() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * file,
                                      sceneRect().top() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * rank);
