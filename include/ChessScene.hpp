@@ -9,6 +9,7 @@ https://inversepalindrome.com/
 
 #include "ChessPiece.hpp"
 #include "ChessBoard.hpp"
+#include "ChessPieceGraphicsItem.hpp"
 
 #include <QGraphicsScene>
 
@@ -22,15 +23,19 @@ class ChessScene : public QGraphicsScene
 public:
     ChessScene(ChessBoard& chessBoard, QObject* parent = nullptr);
 
+    void populateScene();
+
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
-    void populateScene();
+    ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
 
     ChessBoard& chessBoard;
 
     std::unordered_map<ChessPiece, QString, ChessPieceHash> piecesGraphicsMap;
+
+    QPointF sourcePosition;
 };

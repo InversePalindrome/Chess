@@ -6,7 +6,10 @@ https://inversepalindrome.com/
 
 
 #include "ChessScene.hpp"
+#include "ChessUtility.hpp"
 #include "ChessBoardGraphicsItem.hpp"
+
+#include <QGraphicsSceneMouseEvent>
 
 
 ChessScene::ChessScene(ChessBoard& chessBoard, QObject* parent) :
@@ -25,27 +28,13 @@ ChessScene::ChessScene(ChessBoard& chessBoard, QObject* parent) :
                   { ChessPiece{ Chess::Piece::King, Chess::Color::Dark }, "DarkKing.png" },
                   { ChessPiece{ Chess::Piece::Queen, Chess::Color::Dark }, "DarkQueen.png" }, })
 {
-    populateScene();
-}
-
-void ChessScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
-{
-    QGraphicsScene::mouseMoveEvent(event);
-}
-
-void ChessScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
-{
-    QGraphicsScene::mousePressEvent(event);
-}
-
-void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
-{
-    QGraphicsScene::mouseReleaseEvent(event);
 }
 
 void ChessScene::populateScene()
 {
-    addItem(new ChessBoardGraphicsItem());
+    auto* graphicChessBoard = new ChessBoardGraphicsItem();
+
+    addItem(graphicChessBoard);
 
     setSceneRect(itemsBoundingRect());
 
@@ -55,14 +44,66 @@ void ChessScene::populateScene()
         {
             if(piecesGraphicsMap.count(chessBoard[rank][file]))
             {
-                auto* graphicPiece = new QGraphicsPixmapItem(QPixmap(":/Resources/ChessPieces/"
-                                     + piecesGraphicsMap[chessBoard[rank][file]]).scaledToWidth(Chess::PIECE_SIZE));
+                auto* graphicsPiece = new ChessPieceGraphicsItem(QPixmap(":/Resources/ChessPieces/"
+                                     + piecesGraphicsMap[chessBoard[rank][file]]).scaledToWidth(
+                                     Chess::PIECE_SIZE), chessBoard[rank][file], graphicChessBoard);
 
-                graphicPiece->setPos(sceneRect().left() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * file,
+                graphicsPiece->setPos(sceneRect().left() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * file,
                                      sceneRect().top() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * rank);
-
-                addItem(graphicPiece);
             }
         }
     }
+}
+
+void ChessScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
+    //auto* piece = getGraphicsPiece(event->scenePos());
+
+    QGraphicsScene::mouseMoveEvent(event);
+}
+
+void ChessScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    auto* piece = getGraphicsPiece(event->scenePos());
+
+    if(piece == nullptr || event->button() != Qt::LeftButton)
+    {
+        return;
+    }
+
+    sourcePosition = event->scenePos();
+
+    piece->setFlag(QGraphicsItem::ItemIsMovable, true);
+
+    QGraphicsScene::mousePressEvent(event);
+}
+
+void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+    auto* piece = qgraphicsitem_cast<ChessPieceGraphicsItem*>(mouseGrabberItem());
+
+    if(piece != nullptr)
+    {
+        const auto oldPosition = Chess::getChessPositionAt(sourcePosition);
+        const auto newPosition = Chess::getChessPositionAt(event->scenePos());
+    }
+
+    QGraphicsScene::mouseReleaseEvent(event);
+}
+
+ChessPieceGraphicsItem* ChessScene::getGraphicsPiece(const QPointF& position)
+{
+    const auto items = this->items(position);
+
+    for(auto item : items)
+    {
+        auto* piece = qgraphicsitem_cast<ChessPieceGraphicsItem*>(item);
+
+        if(piece != nullptr)
+        {
+            return piece;
+        }
+    }
+
+    return nullptr;
 }

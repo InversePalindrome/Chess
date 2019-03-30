@@ -10,11 +10,17 @@ https://inversepalindrome.com/
 
 namespace Chess
 {
-    static constexpr int RANKS = 8;
     static constexpr int FILES = 8;
-    static constexpr int SQUARE_SIZE = 128;
-    static constexpr int PIECE_SIZE = 100;
+    static constexpr int RANKS = 8;
+    static constexpr int SQUARE_SIZE = 148;
+    static constexpr int PIECE_SIZE = 120;
 
     enum class Piece { None, Pawn, Knight, Bishop, Rook, King, Queen };
     enum class Color { Light, Dark };
+
+    struct Position
+    {
+        int file = -1;
+        int rank = -1;
+    };
 }

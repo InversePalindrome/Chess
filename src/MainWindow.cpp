@@ -5,7 +5,6 @@ https://inversepalindrome.com/
 */
 
 
-#include "ChessScene.hpp"
 #include "MainWindow.hpp"
 #include "ui_MainWindow.h"
 
@@ -15,16 +14,17 @@ https://inversepalindrome.com/
 MainWindow::MainWindow(ChessBoard& chessBoard, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    chessScene(nullptr),
     chessBoard(chessBoard)
 {
     ui->setupUi(this);
     ui->toolBar->setVisible(false);
     ui->toolBar->addAction(QIcon(":/Resources/HomeIcon.png"), "Menu", [this](){ transitionToMenu(); });
 
-    auto* scene = new ChessScene(chessBoard);
+    chessScene = new ChessScene(chessBoard);
 
     auto* view = ui->chessView;
-    view->setScene(scene);
+    view->setScene(chessScene);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setRenderHint(QPainter::Antialiasing);
@@ -43,10 +43,15 @@ void MainWindow::transitionToMenu()
 {
     ui->stackWidget->setCurrentIndex(0);
     ui->toolBar->setVisible(false);
+
+    chessBoard.resetBoard();
+    chessScene->clear();
 }
 
 void MainWindow::transitionToGame()
 {
     ui->stackWidget->setCurrentIndex(1);
     ui->toolBar->setVisible(true);
+
+    chessScene->populateScene();
 }

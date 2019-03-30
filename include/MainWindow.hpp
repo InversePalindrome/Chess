@@ -7,6 +7,7 @@ https://inversepalindrome.com/
 
 #pragma once
 
+#include "ChessScene.hpp"
 #include "ChessBoard.hpp"
 
 #include <QMainWindow>
@@ -32,5 +33,6 @@ public slots:
 private:
     Ui::MainWindow *ui;
 
+    ChessScene* chessScene;
     ChessBoard& chessBoard;
 };

@@ -20,7 +20,9 @@ SOURCES += \
     src/ChessScene.cpp \
     src/ChessBoardGraphicsItem.cpp \
     src/ChessBoard.cpp \
-    src/ChessPiece.cpp
+    src/ChessPiece.cpp \
+    src/ChessUtility.cpp \
+    src/ChessPieceGraphicsItem.cpp
 
 HEADERS += \
     include/MainWindow.hpp \
@@ -28,7 +30,9 @@ HEADERS += \
     include/ChessBoardGraphicsItem.hpp \
     include/ChessBoard.hpp \
     include/ChessConstants.hpp \
-    include/ChessPiece.hpp
+    include/ChessPiece.hpp \
+    include/ChessUtility.hpp \
+    include/ChessPieceGraphicsItem.hpp
 
 FORMS += \
     UI/MainWindow.ui

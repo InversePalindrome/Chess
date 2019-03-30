@@ -82,7 +82,7 @@ void ChessBoardGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphics
             drawingRect = { item, rect.top() + static_cast<qreal>(Chess::SQUARE_SIZE * i),
                             Chess::SQUARE_SIZE / 2.0, static_cast<qreal>(Chess::SQUARE_SIZE) };
 
-            painter->drawText(drawingRect, Qt::AlignCenter, QString::number(i + 1));
+            painter->drawText(drawingRect, Qt::AlignCenter, QString::number(Chess::RANKS - i));
         }
     }
 }
