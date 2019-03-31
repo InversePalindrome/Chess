@@ -5,7 +5,6 @@ https://inversepalindrome.com/
 */
 
 
-#include "ChessBoard.hpp"
 #include "MainWindow.hpp"
 
 #include <QTimer>
@@ -20,9 +19,7 @@ int main(int argc, char *argv[])
     auto* splashScreen = new QSplashScreen(QPixmap(":/Resources/InversePalindromeLogo.jpg"), Qt::WindowStaysOnTopHint);
     splashScreen->show();
 
-    ChessBoard chessBoard;
-
-    MainWindow mainWindow(chessBoard);
+    MainWindow mainWindow;
     mainWindow.setWindowTitle("Chess");
     mainWindow.setFixedSize(1600, 1600);
 

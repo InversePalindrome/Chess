@@ -7,6 +7,8 @@ https://inversepalindrome.com/
 
 #pragma once
 
+#include <cstddef>
+
 
 namespace Chess
 {
@@ -20,7 +22,13 @@ namespace Chess
 
     struct Position
     {
-        int file = -1;
-        int rank = -1;
+        std::size_t file = 0;
+        std::size_t rank = 0;
+    };
+
+    struct Transition
+    {
+        Position oldPosition;
+        Position newPosition;
     };
 }

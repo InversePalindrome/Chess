@@ -12,9 +12,9 @@ https://inversepalindrome.com/
 #include <QGraphicsSceneMouseEvent>
 
 
-ChessScene::ChessScene(ChessBoard& chessBoard, QObject* parent) :
+ChessScene::ChessScene(QObject* parent) :
     QGraphicsScene(parent),
-    chessBoard(chessBoard),
+    moveValidator(chessBoard),
     piecesGraphicsMap({ { ChessPiece{Chess::Piece::Pawn, Chess::Color::Light }, "LightPawn.png" },
                   { ChessPiece{ Chess::Piece::Knight, Chess::Color::Light }, "LightKnight.png" },
                   { ChessPiece{ Chess::Piece::Bishop, Chess::Color::Light }, "LightBishop.png" },
@@ -28,6 +28,7 @@ ChessScene::ChessScene(ChessBoard& chessBoard, QObject* parent) :
                   { ChessPiece{ Chess::Piece::King, Chess::Color::Dark }, "DarkKing.png" },
                   { ChessPiece{ Chess::Piece::Queen, Chess::Color::Dark }, "DarkQueen.png" }, })
 {
+    populateScene();
 }
 
 void ChessScene::populateScene()
@@ -86,6 +87,8 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     {
         const auto oldPosition = Chess::getChessPositionAt(sourcePosition);
         const auto newPosition = Chess::getChessPositionAt(event->scenePos());
+
+
     }
 
     QGraphicsScene::mouseReleaseEvent(event);

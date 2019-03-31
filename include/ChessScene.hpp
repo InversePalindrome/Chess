@@ -9,10 +9,13 @@ https://inversepalindrome.com/
 
 #include "ChessPiece.hpp"
 #include "ChessBoard.hpp"
+#include "MoveValidator.hpp"
 #include "ChessPieceGraphicsItem.hpp"
 
+#include <QHideEvent>
 #include <QGraphicsScene>
 
+#include <vector>
 #include <unordered_map>
 
 
@@ -21,7 +24,7 @@ class ChessScene : public QGraphicsScene
     Q_OBJECT
 
 public:
-    ChessScene(ChessBoard& chessBoard, QObject* parent = nullptr);
+    explicit ChessScene(QObject* parent = nullptr);
 
     void populateScene();
 
@@ -33,8 +36,10 @@ protected:
 private:
     ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
 
-    ChessBoard& chessBoard;
+    ChessBoard chessBoard;
+    MoveValidator moveValidator;
 
+    std::vector<Chess::Transition> moveHistory;
     std::unordered_map<ChessPiece, QString, ChessPieceHash> piecesGraphicsMap;
 
     QPointF sourcePosition;

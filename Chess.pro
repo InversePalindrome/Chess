@@ -22,7 +22,8 @@ SOURCES += \
     src/ChessBoard.cpp \
     src/ChessPiece.cpp \
     src/ChessUtility.cpp \
-    src/ChessPieceGraphicsItem.cpp
+    src/ChessPieceGraphicsItem.cpp \
+    src/MoveValidator.cpp
 
 HEADERS += \
     include/MainWindow.hpp \
@@ -32,7 +33,8 @@ HEADERS += \
     include/ChessConstants.hpp \
     include/ChessPiece.hpp \
     include/ChessUtility.hpp \
-    include/ChessPieceGraphicsItem.hpp
+    include/ChessPieceGraphicsItem.hpp \
+    include/MoveValidator.hpp
 
 FORMS += \
     UI/MainWindow.ui

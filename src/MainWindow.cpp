@@ -6,30 +6,22 @@ https://inversepalindrome.com/
 
 
 #include "MainWindow.hpp"
+#include "ChessScene.hpp"
 #include "ui_MainWindow.h"
 
-#include <QGraphicsView>
 
-
-MainWindow::MainWindow(ChessBoard& chessBoard, QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    chessScene(nullptr),
-    chessBoard(chessBoard)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->toolBar->setVisible(false);
     ui->toolBar->addAction(QIcon(":/Resources/HomeIcon.png"), "Menu", [this](){ transitionToMenu(); });
-
-    chessScene = new ChessScene(chessBoard);
-
-    auto* view = ui->chessView;
-    view->setScene(chessScene);
-    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setRenderHint(QPainter::Antialiasing);
-    view->setMouseTracking(true);
-    view->show();
+    ui->chessView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->chessView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->chessView->setRenderHint(QPainter::Antialiasing);
+    ui->chessView->setMouseTracking(true);
+    ui->chessView->show();
 
     connect(ui->playButton, &QPushButton::clicked, [this](){ transitionToGame(); });
 }
@@ -44,8 +36,8 @@ void MainWindow::transitionToMenu()
     ui->stackWidget->setCurrentIndex(0);
     ui->toolBar->setVisible(false);
 
-    chessBoard.resetBoard();
-    chessScene->clear();
+    delete ui->chessView->scene();
+    ui->chessView->setScene(nullptr);
 }
 
 void MainWindow::transitionToGame()
@@ -53,5 +45,5 @@ void MainWindow::transitionToGame()
     ui->stackWidget->setCurrentIndex(1);
     ui->toolBar->setVisible(true);
 
-    chessScene->populateScene();
+    ui->chessView->setScene(new ChessScene());
 }

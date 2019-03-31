@@ -21,19 +21,14 @@ Chess::Position Chess::getChessPositionAt(const QPointF& position)
         return Chess::Position{};
     }
 
-    int file = static_cast<int>((position.x() + chessRect.width() / 2) / Chess::SQUARE_SIZE);
-    int rank = static_cast<int>((position.y() + chessRect.height() / 2) / Chess::SQUARE_SIZE);
+    auto file = static_cast<std::size_t>((position.x() + chessRect.width() / 2) / Chess::SQUARE_SIZE);
+    auto rank = static_cast<std::size_t>((position.y() + chessRect.height() / 2) / Chess::SQUARE_SIZE);
 
     return Chess::Position{ file, rank };
 }
 
 QPointF Chess::getGraphicsPositionAt(const Chess::Position& position)
 {
-    if(position.file < 0 || position.rank < 0)
-    {
-        return QPointF();
-    }
-
     QRectF chessRect;
     chessRect.setSize({ Chess::FILES * Chess::SQUARE_SIZE, Chess::RANKS * Chess::SQUARE_SIZE });
     chessRect.moveCenter({0, 0});
