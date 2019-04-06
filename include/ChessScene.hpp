@@ -9,6 +9,7 @@ https://inversepalindrome.com/
 
 #include "ChessPiece.hpp"
 #include "ChessBoard.hpp"
+#include "ChessPosition.hpp"
 #include "ChessPieceGraphicsItem.hpp"
 
 #include <QHideEvent>
@@ -33,11 +34,11 @@ protected:
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
+    bool canMove(const ChessPiece& chessPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
+
     ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
 
     ChessBoard chessBoard;
-
     std::unordered_map<ChessPiece, QString, ChessPieceHash> piecesGraphicsMap;
-
     QPointF sourcePosition;
 };

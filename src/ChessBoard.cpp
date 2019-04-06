@@ -37,4 +37,3 @@ const std::array<ChessPiece, Chess::RANKS>& ChessBoard::operator[](const std::si
 {
     return board[static_cast<std::size_t>(index)];
 }
-

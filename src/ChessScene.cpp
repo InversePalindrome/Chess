@@ -88,10 +88,38 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
         const auto oldPosition = Chess::getChessPositionAt(sourcePosition);
         const auto newPosition = Chess::getChessPositionAt(event->scenePos());
 
+        if(canMove(piece->getPiece(), oldPosition, newPosition))
+        {
 
+        }
+        else
+        {
+            piece->setPos(sourcePosition);
+        }
     }
 
     QGraphicsScene::mouseReleaseEvent(event);
+}
+
+bool ChessScene::canMove(const ChessPiece& chessPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const
+{
+    switch(chessPiece.piece)
+    {
+        case Chess::Piece::Pawn:
+            return Chess::isPawnMoveValid(chessBoard, chessPiece.color, oldPos, newPos);
+        case Chess::Piece::Knight:
+            return Chess::isKnightMoveValid(oldPos, newPos);
+        case Chess::Piece::Bishop:
+            return Chess::isBishopMoveValid(chessBoard, oldPos, newPos);
+        case Chess::Piece::Rook:
+            return Chess::isRookMoveValid(chessBoard, oldPos, newPos);
+        case Chess::Piece::Queen:
+            return Chess::isQueenMoveValid(chessBoard, oldPos, newPos);
+        case Chess::Piece::King:
+            return Chess::isKingMoveValid(oldPos, newPos);
+    }
+
+    return false;
 }
 
 ChessPieceGraphicsItem* ChessScene::getGraphicsPiece(const QPointF& position)
