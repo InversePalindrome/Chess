@@ -9,7 +9,6 @@ https://inversepalindrome.com/
 
 #include "ChessPiece.hpp"
 #include "ChessBoard.hpp"
-#include "MoveValidator.hpp"
 #include "ChessPieceGraphicsItem.hpp"
 
 #include <QHideEvent>
@@ -37,9 +36,7 @@ private:
     ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
 
     ChessBoard chessBoard;
-    MoveValidator moveValidator;
 
-    std::vector<Chess::Transition> moveHistory;
     std::unordered_map<ChessPiece, QString, ChessPieceHash> piecesGraphicsMap;
 
     QPointF sourcePosition;

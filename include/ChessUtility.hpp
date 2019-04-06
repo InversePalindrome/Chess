@@ -7,7 +7,7 @@ https://inversepalindrome.com/
 
 #pragma once
 
-#include "ChessConstants.hpp"
+#include "ChessPosition.hpp"
 
 #include <QPointF>
 

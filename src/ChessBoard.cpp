@@ -30,11 +30,11 @@ void ChessBoard::resetBoard()
 
 std::array<ChessPiece, Chess::RANKS>& ChessBoard::operator[](const std::size_t index)
 {
-    return board[index];
+    return board[static_cast<std::size_t>(index)];
 }
 
 const std::array<ChessPiece, Chess::RANKS>& ChessBoard::operator[](const std::size_t index) const
 {
-    return board[index];
+    return board[static_cast<std::size_t>(index)];
 }
 

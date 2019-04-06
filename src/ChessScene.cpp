@@ -7,6 +7,7 @@ https://inversepalindrome.com/
 
 #include "ChessScene.hpp"
 #include "ChessUtility.hpp"
+#include "ChessValidation.hpp"
 #include "ChessBoardGraphicsItem.hpp"
 
 #include <QGraphicsSceneMouseEvent>
@@ -14,7 +15,6 @@ https://inversepalindrome.com/
 
 ChessScene::ChessScene(QObject* parent) :
     QGraphicsScene(parent),
-    moveValidator(chessBoard),
     piecesGraphicsMap({ { ChessPiece{Chess::Piece::Pawn, Chess::Color::Light }, "LightPawn.png" },
                   { ChessPiece{ Chess::Piece::Knight, Chess::Color::Light }, "LightKnight.png" },
                   { ChessPiece{ Chess::Piece::Bishop, Chess::Color::Light }, "LightBishop.png" },

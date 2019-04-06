@@ -6,6 +6,7 @@ https://inversepalindrome.com/
 
 
 #include "ChessUtility.hpp"
+#include "ChessConstants.hpp"
 
 #include <QRectF>
 

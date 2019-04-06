@@ -32,11 +32,11 @@ void ChessBoardGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphics
     QRectF drawingRect(rect.topLeft(), QSizeF(Chess::SQUARE_SIZE, Chess::SQUARE_SIZE));
     const auto leftRect = drawingRect.left();
 
-    for(int i = 0; i < Chess::RANKS; ++i)
+    for(std::size_t i = 0; i < Chess::RANKS; ++i)
     {
         drawingRect.moveLeft(leftRect);
 
-        for(int j = 0; j < Chess::FILES; ++j)
+        for(std::size_t j = 0; j < Chess::FILES; ++j)
         {
             if((i % 2) == (j % 2))
             {
@@ -60,7 +60,7 @@ void ChessBoardGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphics
 
     const QString fileText = "abcdefgh";
 
-    for(int j = 0; j < Chess::FILES; ++j)
+    for(std::size_t j = 0; j < Chess::FILES; ++j)
     {
         const qreal horizontalItems[] = { rect.top() - Chess::SQUARE_SIZE / 2.0, rect.bottom() };
 
@@ -73,7 +73,7 @@ void ChessBoardGraphicsItem::paint(QPainter* painter, const QStyleOptionGraphics
         }
     }
 
-    for(int i = 0; i < Chess::RANKS; ++i)
+    for(std::size_t i = 0; i < Chess::RANKS; ++i)
     {
         const qreal verticalItems[] = { rect.left() - Chess::SQUARE_SIZE / 2.0, rect.right() };
 
