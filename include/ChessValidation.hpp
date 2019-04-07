@@ -13,7 +13,7 @@ https://inversepalindrome.com/
 
 namespace Chess
 {
-    bool isPawnMoveValid(const ChessBoard& chessBoard, Chess::Color pawnColor, const Chess::Position& oldPos, const Chess::Position& newPos);
+    bool isPawnMoveValid(const ChessBoard& chessBoard, Chess::Color pawnColor, bool hasMoved, const Chess::Position& oldPos, const Chess::Position& newPos);
     bool isKnightMoveValid(const Chess::Position& oldPos, const Chess::Position& newPos);
     bool isBishopMoveValid(const ChessBoard& chessBoard, const Chess::Position& oldPos, const Chess::Position& newPos);
     bool isRookMoveValid(const ChessBoard& chessBoard, const Chess::Position& oldPos, const Chess::Position& newPos);

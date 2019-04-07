@@ -14,7 +14,7 @@ ChessBoardGraphicsItem::ChessBoardGraphicsItem(QGraphicsItem* parent) :
     lightColor(255, 255, 255),
     darkColor(0, 0, 0)
 {
-    rect.setSize({ Chess::FILES * Chess::SQUARE_SIZE, Chess::RANKS * Chess::SQUARE_SIZE });
+    rect.setSize({ Chess::RANKS * Chess::SQUARE_SIZE, Chess::FILES * Chess::SQUARE_SIZE });
     rect.moveCenter({0, 0});
 }
 

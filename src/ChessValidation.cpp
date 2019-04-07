@@ -8,7 +8,7 @@ https://inversepalindrome.com/
 #include "ChessValidation.hpp"
 
 
-bool Chess::isPawnMoveValid(const ChessBoard& chessBoard, Chess::Color pawnColor,
+bool Chess::isPawnMoveValid(const ChessBoard& chessBoard, Chess::Color pawnColor, bool hasMoved,
                             const Chess::Position& oldPos, const Chess::Position& newPos)
 {
     if((pawnColor == Chess::Color::Light && newPos.rank != oldPos.rank - 1) ||
@@ -52,7 +52,7 @@ bool Chess::isBishopMoveValid(const ChessBoard& chessBoard, const Chess::Positio
     if(oldPos.rank < newPos.rank && oldPos.file < newPos.file)
     {
         for(auto currPos = Chess::Position{ oldPos.rank + 1, oldPos.file + 1};
-            currPos.rank < Chess::RANKS && currPos.file < Chess::FILES; ++currPos.rank, ++currPos.file)
+            currPos.rank < Chess::RANKS || currPos.file < Chess::FILES; ++currPos.rank, ++currPos.file)
         {
             if(newPos == currPos)
             {
@@ -67,8 +67,8 @@ bool Chess::isBishopMoveValid(const ChessBoard& chessBoard, const Chess::Positio
 
     if(oldPos.rank < newPos.rank && oldPos.file > newPos.file)
     {
-        for(auto currPos = Chess::Position{ oldPos.rank + 1, oldPos.file + 1};
-            currPos.rank < Chess::RANKS && currPos.file + 1 > 0; ++currPos.rank, --currPos.file)
+        for(auto currPos = Chess::Position{ oldPos.rank + 1, oldPos.file - 1};
+            currPos.rank < Chess::RANKS || currPos.file + 1 > 0; ++currPos.rank, --currPos.file)
         {
             if(newPos == currPos)
             {
@@ -83,8 +83,8 @@ bool Chess::isBishopMoveValid(const ChessBoard& chessBoard, const Chess::Positio
 
     if(oldPos.rank > newPos.rank && oldPos.file > newPos.file)
     {
-        for(auto currPos = Chess::Position{ oldPos.rank + 1, oldPos.file + 1};
-            currPos.rank + 1 > 0 && currPos.file + 1 > 0; --currPos.rank, --currPos.file)
+        for(auto currPos = Chess::Position{ oldPos.rank - 1, oldPos.file - 1};
+            currPos.rank + 1 > 0 || currPos.file + 1 > 0; --currPos.rank, --currPos.file)
         {
             if(newPos == currPos)
             {
@@ -99,8 +99,8 @@ bool Chess::isBishopMoveValid(const ChessBoard& chessBoard, const Chess::Positio
 
     if(oldPos.rank > newPos.rank && oldPos.file < newPos.file)
     {
-        for(auto currPos = Chess::Position{ oldPos.rank + 1, oldPos.file + 1};
-            currPos.rank + 1 > 0 && currPos.file < Chess::FILES; --currPos.rank, ++currPos.file)
+        for(auto currPos = Chess::Position{ oldPos.rank - 1, oldPos.file + 1};
+            currPos.rank + 1 > 0 || currPos.file < Chess::FILES; --currPos.rank, ++currPos.file)
         {
             if(newPos == currPos)
             {

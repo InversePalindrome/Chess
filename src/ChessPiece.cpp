@@ -7,10 +7,12 @@ https://inversepalindrome.com/
 
 #include "ChessPiece.hpp"
 
+#include <functional>
+
 
 bool ChessPiece::operator==(const ChessPiece& chessPiece) const
 {
-    return piece == chessPiece.piece && color == chessPiece.color;
+	return piece == chessPiece.piece && color == chessPiece.color;
 }
 
 std::size_t ChessPieceHash::operator()(const ChessPiece& chessPiece) const

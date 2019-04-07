@@ -13,14 +13,15 @@ https://inversepalindrome.com/
 class ChessPieceGraphicsItem : public QGraphicsPixmapItem
 {
 public:
-    ChessPieceGraphicsItem(const QPixmap& pixmap, const ChessPiece& chessPiece, QGraphicsItem* parent = nullptr);
+    ChessPieceGraphicsItem(const ChessPiece& chessPiece, const QPixmap& pixmap, QGraphicsItem* parent = nullptr);
 
     virtual int type() const override;
 
-    ChessPiece getPiece() const;
-
     enum { Type = UserType + 1 };
 
+	ChessPiece getChessPiece();
+	void setChessPiece(const ChessPiece& chessPiece);
+
 private:
-    ChessPiece chessPiece;
+	ChessPiece chessPiece;
 };

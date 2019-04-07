@@ -14,7 +14,7 @@ https://inversepalindrome.com/
 Chess::Position Chess::getChessPositionAt(const QPointF& position)
 {
     QRectF chessRect;
-    chessRect.setSize({ Chess::FILES * Chess::SQUARE_SIZE, Chess::RANKS * Chess::SQUARE_SIZE });
+    chessRect.setSize({ Chess::RANKS * Chess::SQUARE_SIZE, Chess::FILES * Chess::SQUARE_SIZE });
     chessRect.moveCenter({0, 0});
 
     if(!chessRect.contains(position))
@@ -22,16 +22,16 @@ Chess::Position Chess::getChessPositionAt(const QPointF& position)
         return Chess::Position{};
     }
 
+	auto rank = static_cast<std::size_t>((position.y() + chessRect.height() / 2) / Chess::SQUARE_SIZE);
     auto file = static_cast<std::size_t>((position.x() + chessRect.width() / 2) / Chess::SQUARE_SIZE);
-    auto rank = static_cast<std::size_t>((position.y() + chessRect.height() / 2) / Chess::SQUARE_SIZE);
 
-    return Chess::Position{ file, rank };
+    return Chess::Position{ rank, file };
 }
 
 QPointF Chess::getGraphicsPositionAt(const Chess::Position& position)
 {
     QRectF chessRect;
-    chessRect.setSize({ Chess::FILES * Chess::SQUARE_SIZE, Chess::RANKS * Chess::SQUARE_SIZE });
+    chessRect.setSize({ Chess::RANKS * Chess::SQUARE_SIZE, Chess::FILES * Chess::SQUARE_SIZE });
     chessRect.moveCenter({0, 0});
 
     qreal x = chessRect.left() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * position.file;

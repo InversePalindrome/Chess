@@ -8,9 +8,9 @@ https://inversepalindrome.com/
 #include "ChessPieceGraphicsItem.hpp"
 
 
-ChessPieceGraphicsItem::ChessPieceGraphicsItem(const QPixmap& pixmap, const ChessPiece& chessPiece, QGraphicsItem* parent) :
+ChessPieceGraphicsItem::ChessPieceGraphicsItem(const ChessPiece& chessPiece, const QPixmap& pixmap, QGraphicsItem* parent) :
     QGraphicsPixmapItem(pixmap, parent),
-    chessPiece(chessPiece)
+	chessPiece(chessPiece)
 {
 }
 
@@ -19,7 +19,12 @@ int ChessPieceGraphicsItem::type() const
     return Type;
 }
 
-ChessPiece ChessPieceGraphicsItem::getPiece() const
+ChessPiece ChessPieceGraphicsItem::getChessPiece()
 {
-    return chessPiece;
+	return chessPiece;
+}
+
+void ChessPieceGraphicsItem::setChessPiece(const ChessPiece& chessPiece)
+{
+	this->chessPiece = chessPiece;
 }

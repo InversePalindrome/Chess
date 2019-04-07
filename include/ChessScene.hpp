@@ -7,16 +7,11 @@ https://inversepalindrome.com/
 
 #pragma once
 
-#include "ChessPiece.hpp"
 #include "ChessBoard.hpp"
 #include "ChessPosition.hpp"
 #include "ChessPieceGraphicsItem.hpp"
 
-#include <QHideEvent>
 #include <QGraphicsScene>
-
-#include <vector>
-#include <unordered_map>
 
 
 class ChessScene : public QGraphicsScene
@@ -35,10 +30,12 @@ protected:
 
 private:
     bool canMove(const ChessPiece& chessPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
+	void switchPlayer();
 
     ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
 
     ChessBoard chessBoard;
-    std::unordered_map<ChessPiece, QString, ChessPieceHash> piecesGraphicsMap;
+	Chess::Color currentPlayer;
+
     QPointF sourcePosition;
 };

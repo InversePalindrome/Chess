@@ -10,7 +10,6 @@ https://inversepalindrome.com/
 #include "ChessConstants.hpp"
 
 #include <cstddef>
-#include <functional>
 
 
 struct ChessPiece
@@ -18,7 +17,9 @@ struct ChessPiece
     Chess::Piece piece = Chess::Piece::None;
     Chess::Color color = Chess::Color::Light;
 
-    bool operator==(const ChessPiece& chessPiece) const;
+	bool hasMoved = false;
+
+	bool operator==(const ChessPiece& chessPiece) const;
 };
 
 struct ChessPieceHash
