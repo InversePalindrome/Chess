@@ -5,20 +5,23 @@ https://inversepalindrome.com/
 */
 
 
+#include "Difference.hpp"
 #include "ChessValidation.hpp"
 
 
 bool Chess::isPawnMoveValid(const ChessBoard& chessBoard, Chess::Color pawnColor, bool hasMoved,
                             const Chess::Position& oldPos, const Chess::Position& newPos)
 {
-    if((pawnColor == Chess::Color::Light && newPos.rank != oldPos.rank - 1) ||
-       (pawnColor == Chess::Color::Dark && newPos.rank != oldPos.rank + 1))
+    if((pawnColor == Chess::Color::Light && newPos.rank > oldPos.rank) ||
+       (pawnColor == Chess::Color::Dark && newPos.rank < oldPos.rank))
     {
         return false;
     }
 
-    if((newPos.file == oldPos.file && chessBoard[newPos.rank][newPos.file].piece == Chess::Piece::None) ||
-       ((newPos.file == oldPos.file + 1 || newPos.file == oldPos.file - 1) &&
+    if((newPos.file == oldPos.file && (Utility::diff(newPos.rank, oldPos.rank) == 1 || 
+		(!hasMoved && Utility::diff(newPos.rank, oldPos.rank) == 2)) && 
+		chessBoard[newPos.rank][newPos.file].piece == Chess::Piece::None) ||
+       (Utility::diff(newPos.file, oldPos.file) == 1 && Utility::diff(newPos.rank, oldPos.rank) == 1 && 
        chessBoard[newPos.rank][newPos.file].piece != Chess::Piece::None))
     {
         return true;
@@ -29,16 +32,16 @@ bool Chess::isPawnMoveValid(const ChessBoard& chessBoard, Chess::Color pawnColor
 
 bool Chess::isKnightMoveValid(const Chess::Position& oldPos, const Chess::Position& newPos)
 {
-    if(newPos.rank == oldPos.rank + 2 || newPos.rank == oldPos.rank - 2)
+    if(Utility::diff(newPos.rank, oldPos.rank) == 2)
     {
-        if(newPos.file == oldPos.file + 1 || newPos.file == oldPos.file - 1)
+        if(Utility::diff(newPos.file, oldPos.file) == 1)
         {
             return true;
         }
     }
-    else if(newPos.file == oldPos.file + 2 || newPos.file == oldPos.file - 2)
+    else if(Utility::diff(newPos.file, oldPos.file) == 2)
     {
-        if(newPos.rank == oldPos.rank + 1 || newPos.rank == oldPos.rank - 1)
+        if(Utility::diff(newPos.rank, oldPos.rank) == 1)
         {
             return true;
         }
@@ -188,6 +191,9 @@ bool Chess::isQueenMoveValid(const ChessBoard& chessBoard, const Chess::Position
 
 bool Chess::isKingMoveValid(const Chess::Position& oldPos, const Chess::Position& newPos)
 {
-    return oldPos.rank == newPos.rank + 1 || oldPos.rank == newPos.rank - 1 || oldPos.file == newPos.file + 1
-       || oldPos.file == newPos.file - 1;
+	auto rankDiff = Utility::diff(oldPos.rank, newPos.rank);
+	auto fileDiff = Utility::diff(oldPos.file, newPos.file);
+
+    return (rankDiff == 1 && fileDiff == 1) || (rankDiff == 0 && fileDiff == 1)
+		|| (rankDiff == 1 && fileDiff == 0);
 }

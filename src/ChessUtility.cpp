@@ -8,8 +8,6 @@ https://inversepalindrome.com/
 #include "ChessUtility.hpp"
 #include "ChessConstants.hpp"
 
-#include <QRectF>
-
 
 Chess::Position Chess::getChessPositionAt(const QPointF& position)
 {
@@ -28,15 +26,8 @@ Chess::Position Chess::getChessPositionAt(const QPointF& position)
     return Chess::Position{ rank, file };
 }
 
-QPointF Chess::getGraphicsPositionAt(const Chess::Position& position)
+QPointF Chess::getGraphicsPosition(const QRectF& sceneRect, const Chess::Position& chessPosition)
 {
-    QRectF chessRect;
-    chessRect.setSize({ Chess::RANKS * Chess::SQUARE_SIZE, Chess::FILES * Chess::SQUARE_SIZE });
-    chessRect.moveCenter({0, 0});
-
-    qreal x = chessRect.left() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * position.file;
-    qreal y = chessRect.top() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE
-            * (Chess::RANKS - position.rank - 1);
-
-    return QPointF(x, y);
+	return { sceneRect.left() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * chessPosition.file,
+			sceneRect.top() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * chessPosition.rank };
 }

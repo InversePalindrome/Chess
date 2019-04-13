@@ -9,11 +9,12 @@ https://inversepalindrome.com/
 
 #include "ChessPosition.hpp"
 
+#include <QRectF>
 #include <QPointF>
 
 
 namespace Chess
 {
     Chess::Position getChessPositionAt(const QPointF& position);
-    QPointF getGraphicsPositionAt(const Chess::Position& position);
+	QPointF getGraphicsPosition(const QRectF& sceneRect, const Chess::Position& chessPosition);
 }

@@ -30,9 +30,11 @@ protected:
 
 private:
     bool canMove(const ChessPiece& chessPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
+	void manageDrop(const ChessPiece& movingChessPiece, const Chess::Position& newPosition);
 	void switchPlayer();
 
     ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
+	ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position, const ChessPiece& chessPiece);
 
     ChessBoard chessBoard;
 	Chess::Color currentPlayer;

@@ -39,8 +39,7 @@ void ChessScene::populateScene()
                                      + QString::fromStdString(Chess::resources.at(chessBoard[rank][file]))).scaledToWidth(
                                      Chess::PIECE_SIZE), graphicChessBoard);
 				
-                graphicsPiece->setPos(sceneRect().left() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * file,
-                              sceneRect().top() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * rank);
+				graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), Chess::Position{rank, file}));
             }
         }
     }
@@ -73,23 +72,24 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     {
         const auto oldPosition = Chess::getChessPositionAt(sourcePosition);
         const auto newPosition = Chess::getChessPositionAt(event->scenePos());
-		auto& chessPiece = chessBoard[oldPosition.rank][oldPosition.file];
+		auto movingPiece = chessBoard[oldPosition.rank][oldPosition.file];
 
-        if(canMove(chessPiece, oldPosition, newPosition))
+        if(canMove(movingPiece, oldPosition, newPosition))
         {
-			chessPiece.hasMoved = true;
+			movingPiece.hasMoved = true;
 
-			std::swap(chessPiece, chessBoard[newPosition.rank][newPosition.file]);
+			manageDrop(movingPiece, newPosition);
+			
+			chessBoard[oldPosition.rank][oldPosition.file] = ChessPiece{};
+			chessBoard[newPosition.rank][newPosition.file] = movingPiece;
 
-			graphicsPiece->setPos(sceneRect().left() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * newPosition.file,
-				sceneRect().top() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * newPosition.rank);
+			graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), newPosition));
 
 			switchPlayer();
         }
         else
         {
-			graphicsPiece->setPos(sceneRect().left() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * oldPosition.file,
-		    sceneRect().top() + Chess::SQUARE_SIZE / 2 + Chess::SQUARE_SIZE * oldPosition.rank);
+			graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), oldPosition));
         }
 
 		graphicsPiece->setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -119,6 +119,17 @@ bool ChessScene::canMove(const ChessPiece& chessPiece, const Chess::Position& ol
     return false;
 }
 
+void ChessScene::manageDrop(const ChessPiece& movingPiece, const Chess::Position& newPosition)
+{
+	if (auto currentPiece = chessBoard[newPosition.rank][newPosition.file];
+		currentPiece.piece != Chess::Piece::None && currentPiece.color != movingPiece.color)
+	{
+		auto* takenGraphicsPiece = getGraphicsPiece(Chess::getGraphicsPosition(sceneRect(), newPosition), currentPiece);
+
+		removeItem(takenGraphicsPiece);
+	}
+}
+
 void ChessScene::switchPlayer()
 {
 	if (currentPlayer == Chess::Color::Light)
@@ -137,13 +148,27 @@ ChessPieceGraphicsItem* ChessScene::getGraphicsPiece(const QPointF& position)
 
     for(auto item : items)
     {
-        auto* piece = qgraphicsitem_cast<ChessPieceGraphicsItem*>(item);
-
-        if(piece != nullptr)
+        if(auto * piece = qgraphicsitem_cast<ChessPieceGraphicsItem*>(item); piece != nullptr)
         {
             return piece;
         }
     }
 
     return nullptr;
+}
+
+ChessPieceGraphicsItem* ChessScene::getGraphicsPiece(const QPointF& position, const ChessPiece& chessPiece)
+{
+	const auto items = this->items(position);
+
+	for (auto item : items)
+	{
+		if (auto * piece = qgraphicsitem_cast<ChessPieceGraphicsItem*>(item); 
+			piece != nullptr && piece->getChessPiece() == chessPiece)
+		{
+			return piece;
+		}
+	}
+
+	return nullptr;
 }
