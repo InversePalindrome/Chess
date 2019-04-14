@@ -7,7 +7,7 @@ https://inversepalindrome.com/
 
 #pragma once
 
-#include "ChessConstants.hpp"
+#include "ChessPiece.hpp"
 
 #include <QDialog>
 
@@ -17,5 +17,5 @@ class PromotionDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit PromotionDialog(Chess::Color color, QWidget* parent = nullptr);
+	explicit PromotionDialog(ChessPiece& promotedPiece, QWidget* parent = nullptr);
 };

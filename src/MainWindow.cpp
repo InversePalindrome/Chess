@@ -8,6 +8,7 @@ https://inversepalindrome.com/
 #include "MainWindow.hpp"
 #include "ChessScene.hpp"
 #include "ui_MainWindow.h"
+#include "PromotionDialog.hpp"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -45,5 +46,11 @@ void MainWindow::transitionToGame()
     ui->stackWidget->setCurrentIndex(1);
     ui->toolBar->setVisible(true);
 
-    ui->chessView->setScene(new ChessScene());
+	auto* chessScene = new ChessScene();
+    ui->chessView->setScene(chessScene);
+	connect(chessScene, &ChessScene::openPromotionDialog, [this](auto& piece)
+	{ 
+		PromotionDialog dialog(piece, this);
+		dialog.exec();
+	});
 }
