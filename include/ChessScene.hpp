@@ -9,9 +9,13 @@ https://inversepalindrome.com/
 
 #include "ChessBoard.hpp"
 #include "ChessPosition.hpp"
+#include "ChessTransition.hpp"
 #include "ChessPieceGraphicsItem.hpp"
 
 #include <QGraphicsScene>
+
+#include <array>
+#include <vector>
 
 
 class ChessScene : public QGraphicsScene
@@ -21,7 +25,7 @@ class ChessScene : public QGraphicsScene
 public:
     explicit ChessScene(QObject* parent = nullptr);
 
-    void populateScene();
+	void populateScene();
 
 protected:
     virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
@@ -34,10 +38,11 @@ private:
 	void switchPlayer();
 
     ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
-	ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position, const ChessPiece& chessPiece);
 
     ChessBoard chessBoard;
+	std::vector<Chess::Transition> chessHistory;
 	Chess::Color currentPlayer;
 
     QPointF sourcePosition;
+	std::array<std::array<ChessPieceGraphicsItem*, Chess::RANKS>, Chess::FILES> graphicsBoard;
 };

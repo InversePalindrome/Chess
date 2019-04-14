@@ -197,3 +197,243 @@ bool Chess::isKingMoveValid(const Chess::Position& oldPos, const Chess::Position
     return (rankDiff == 1 && fileDiff == 1) || (rankDiff == 0 && fileDiff == 1)
 		|| (rankDiff == 1 && fileDiff == 0);
 }
+
+bool Chess::isInCheck(const ChessBoard& chessBoard, Chess::Color kingColor, const Chess::Position kingPos)
+{
+	for(auto currRank = kingPos.rank + 1; currRank < Chess::RANKS; ++currRank)
+	{
+		const auto currPiece = chessBoard[currRank][kingPos.file];
+
+		if (currPiece.piece == Chess::Piece::None)
+		{
+			continue;
+		}
+		else if (currPiece.color == kingColor || (currPiece.piece != Chess::Piece::Rook &&
+			currPiece.piece != Chess::Piece::Queen))
+		{
+			break;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	for(auto currRank = kingPos.rank - 1; currRank + 1 > 0; --currRank)
+	{
+		const auto currPiece = chessBoard[currRank][kingPos.file];
+
+		if (currPiece.piece == Chess::Piece::None)
+		{
+			continue;
+		}
+		else if (currPiece.color == kingColor || (currPiece.piece != Chess::Piece::Rook &&
+			currPiece.piece != Chess::Piece::Queen))
+		{
+			break;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	for(auto currFile = kingPos.file + 1; currFile < Chess::FILES; ++currFile)
+	{
+		const auto currPiece = chessBoard[kingPos.rank][currFile];
+
+		if (currPiece.piece == Chess::Piece::None)
+		{
+			continue;
+		}
+		else if (currPiece.color == kingColor || (currPiece.piece != Chess::Piece::Rook &&
+			currPiece.piece != Chess::Piece::Queen))
+		{
+			break;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
+	for(auto currFile = kingPos.file - 1; currFile + 1 > 0; --currFile)
+	{
+		const auto currPiece = chessBoard[kingPos.rank][currFile];
+
+		if (currPiece.piece == Chess::Piece::None)
+		{
+			continue;
+		}
+		else if (currPiece.color == kingColor || (currPiece.piece != Chess::Piece::Rook &&
+			currPiece.piece != Chess::Piece::Queen))
+		{
+			break;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	for (auto currPos = Chess::Position{ kingPos.rank + 1, kingPos.file + 1 };
+		 currPos.rank < Chess::RANKS || currPos.file < Chess::FILES; ++currPos.rank, ++currPos.file)
+	{
+		const auto currPiece = chessBoard[currPos.rank][currPos.file];
+
+		if (currPiece.piece == Chess::Piece::None)
+		{
+			continue;
+		}
+		else if (currPiece.color == kingColor || (currPiece.piece != Chess::Piece::Bishop &&
+			currPiece.piece != Chess::Piece::Queen))
+		{
+			break;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	for (auto currPos = Chess::Position{ kingPos.rank + 1, kingPos.file - 1 };
+		 currPos.rank < Chess::RANKS || currPos.file + 1 > 0; ++currPos.rank, --currPos.file)
+	{
+		const auto currPiece = chessBoard[currPos.rank][currPos.file];
+
+		if (currPiece.piece == Chess::Piece::None)
+		{
+			continue;
+		}
+		else if (currPiece.color == kingColor || (currPiece.piece != Chess::Piece::Bishop &&
+			currPiece.piece != Chess::Piece::Queen))
+		{
+			break;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	for (auto currPos = Chess::Position{ kingPos.rank - 1, kingPos.file - 1 };
+		 currPos.rank + 1 > 0 || currPos.file + 1 > 0; --currPos.rank, --currPos.file)
+	{
+		const auto currPiece = chessBoard[currPos.rank][currPos.file];
+
+		if (currPiece.piece == Chess::Piece::None)
+		{
+			continue;
+		}
+		else if (currPiece.color == kingColor || (currPiece.piece != Chess::Piece::Bishop &&
+			currPiece.piece != Chess::Piece::Queen))
+		{
+			break;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	for (auto currPos = Chess::Position{ kingPos.rank - 1, kingPos.file + 1 };
+		 currPos.rank + 1 > 0 || currPos.file < Chess::FILES; --currPos.rank, ++currPos.file)
+	{
+		const auto currPiece = chessBoard[currPos.rank][currPos.file];
+
+		if (currPiece.piece == Chess::Piece::None)
+		{
+			continue;
+		}
+		else if (currPiece.color == kingColor || (currPiece.piece != Chess::Piece::Bishop &&
+			currPiece.piece != Chess::Piece::Queen))
+		{
+			break;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	Chess::Position knightMoves[] = { { kingPos.rank + 1, kingPos.file - 2 }, { kingPos.rank + 1, kingPos.file + 2 }
+	, { kingPos.rank + 2, kingPos.file -  1}, { kingPos.rank + 2, kingPos.file + 1 }, { kingPos.rank - 1, kingPos.file - 2}
+	, { kingPos.rank - 1, kingPos.file + 2 }, { kingPos.rank - 2, kingPos.file - 1 }, { kingPos.rank - 2, kingPos.file + 1} };
+
+	for (const auto currPos : knightMoves)
+	{
+		if (currPos.rank >= 0 && currPos.rank < Chess::RANKS && currPos.file >= 0 && currPos.file < Chess::FILES)
+		{
+			const auto currPiece = chessBoard[currPos.rank][currPos.file];
+
+			if (currPiece.piece != Chess::Piece::None && currPiece.color != kingColor &&
+				currPiece.piece == Chess::Piece::Knight)
+			{
+				return true;
+			}
+		}
+	}
+
+	Chess::Position kingMoves[] = { { kingPos.rank + 1, kingPos.file - 1 }, { kingPos.rank + 1, kingPos.file + 1 },
+	{ kingPos.rank + 1, kingPos.file }, { kingPos.rank , kingPos.file + 1}, { kingPos.rank, kingPos.file - 1},
+	{ kingPos.rank - 1, kingPos.file + 1 }, { kingPos.rank - 1, kingPos.file - 1}, { kingPos.rank - 1, kingPos.file } };
+
+	for (const auto currPos : kingMoves)
+	{
+		if (currPos.rank >= 0 && currPos.rank < Chess::RANKS && currPos.file >= 0 && currPos.file < Chess::FILES)
+		{
+			const auto currPiece = chessBoard[currPos.rank][currPos.file];
+
+			if (currPiece.piece != Chess::Piece::None && currPiece.color != kingColor &&
+				currPiece.piece == Chess::Piece::King)
+			{
+				return true;
+			}
+		}
+	}
+	
+	if (kingColor == Chess::Color::Dark)
+	{
+		if (kingPos.rank < Chess::RANKS - 1 && kingPos.file > 0)
+		{
+			const auto currPiece = chessBoard[kingPos.rank + 1][kingPos.file - 1];
+
+			if (currPiece.piece == Chess::Piece::Pawn && currPiece.color != kingColor)
+			{
+				return true;
+			}
+		}
+		else if (kingPos.rank < Chess::RANKS - 1 && kingPos.file < Chess::FILES - 1)
+		{
+			const auto currPiece = chessBoard[kingPos.rank + 1][kingPos.file + 1];
+
+			if (currPiece.piece == Chess::Piece::Pawn && currPiece.color != kingColor)
+			{
+				return true;
+			}
+		}
+	}
+	else
+	{
+		if (kingPos.rank > 0 && kingPos.file > 0)
+		{
+			const auto currPiece = chessBoard[kingPos.rank - 1][kingPos.file - 1];
+
+			if (currPiece.piece == Chess::Piece::Pawn && currPiece.color != kingColor)
+			{
+				return true;
+			}
+		}
+		else if (kingPos.rank > 0 && kingPos.file < Chess::FILES - 1)
+		{
+			const auto currPiece = chessBoard[kingPos.rank - 1][kingPos.file + 1];
+
+			if (currPiece.piece == Chess::Piece::Pawn && currPiece.color != kingColor)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
