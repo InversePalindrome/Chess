@@ -154,7 +154,7 @@ bool ChessScene::leavesKingInCheck(const ChessPiece& movingPiece, const Chess::P
 		kingPosition = darkKingPosition;
 	}
 
-	if (Chess::isInCheck(testChessBoard, movingPiece.color, kingPosition))
+	if (Chess::canBeCaptured(testChessBoard, movingPiece.color, kingPosition))
 	{
 		return true;
 	}
