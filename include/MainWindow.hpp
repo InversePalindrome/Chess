@@ -7,6 +7,8 @@ https://inversepalindrome.com/
 
 #pragma once
 
+#include "ChessScene.hpp"
+
 #include <QMainWindow>
 
 
@@ -24,8 +26,8 @@ public:
     ~MainWindow();
 
 public slots:
-    void transitionToMenu();
-    void transitionToGame();
+    void transitionToMenu(ChessScene* chessScene);
+    void transitionToGame(ChessScene* chessScene);
 
 private:
     Ui::MainWindow *ui;

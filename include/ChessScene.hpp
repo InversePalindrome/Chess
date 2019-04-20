@@ -9,6 +9,7 @@ https://inversepalindrome.com/
 
 #include "ChessBoard.hpp"
 #include "ChessPosition.hpp"
+#include "ChessConstants.hpp"
 #include "ChessTransition.hpp"
 #include "ChessPieceGraphicsItem.hpp"
 
@@ -26,9 +27,9 @@ public:
     explicit ChessScene(QObject* parent = nullptr);
 
 	void populateScene();
+	void resetScene();
 
 protected:
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 
@@ -36,13 +37,13 @@ private:
     bool canMove(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
 	bool leavesKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
 
+	void manageEndGame(const Chess::Position& attackerPos);
 	void manageDrop(const ChessPiece& movingPiece, const Chess::Position& newPos);
 	void managePromotion(ChessPiece& movingPiece, ChessPieceGraphicsItem* graphicsPiece, const Chess::Position& newPos);
 
 	void updateKingPosition(const ChessPiece& movingPiece, const Chess::Position newPos);
 
 	void switchPlayer();
-
 
     ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
 
@@ -56,5 +57,6 @@ private:
 	std::array<std::array<ChessPieceGraphicsItem*, Chess::RANKS>, Chess::FILES> graphicsBoard;
 
 signals:
+	void gameEnded(Chess::EndResult result);
 	void openPromotionDialog(ChessPiece& movingPiece);
 };

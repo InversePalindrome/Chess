@@ -1,6 +1,6 @@
 /*
 Copyright (c) 2019 Inverse Palindrome
-Chess - ChessValidation.hpp
+Chess - ChessMoveValidation.hpp
 https://inversepalindrome.com/
 */
 

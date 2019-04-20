@@ -1,12 +1,13 @@
 /*
 Copyright (c) 2019 Inverse Palindrome
-Chess - ChessValidation.cpp
+Chess - ChessMoveValidation.cpp
 https://inversepalindrome.com/
 */
 
 
 #include "Difference.hpp"
-#include "ChessValidation.hpp"
+#include "ChessMoveValidation.hpp"
+#include "ChessMoveGeneration.hpp"
 
 
 bool Chess::isPawnMoveValid(const ChessBoard& chessBoard, Chess::Color pawnColor, bool hasMoved,
@@ -191,8 +192,8 @@ bool Chess::isQueenMoveValid(const ChessBoard& chessBoard, const Chess::Position
 
 bool Chess::isKingMoveValid(const Chess::Position& oldPos, const Chess::Position& newPos)
 {
-	auto rankDiff = Utility::diff(oldPos.rank, newPos.rank);
-	auto fileDiff = Utility::diff(oldPos.file, newPos.file);
+	const auto rankDiff = Utility::diff(oldPos.rank, newPos.rank);
+	const auto fileDiff = Utility::diff(oldPos.file, newPos.file);
 
     return (rankDiff == 1 && fileDiff == 1) || (rankDiff == 0 && fileDiff == 1)
 		|| (rankDiff == 1 && fileDiff == 0);
@@ -440,31 +441,20 @@ bool Chess::isCheckmate(const ChessBoard& chessBoard, Chess::Color kingColor, co
 {
 	auto testChessBoard = chessBoard;
 
-	Chess::Position kingMoves[] = { { kingPos.rank + 1, kingPos.file - 1 }, { kingPos.rank + 1, kingPos.file + 1 },
-	{ kingPos.rank + 1, kingPos.file }, { kingPos.rank , kingPos.file + 1}, { kingPos.rank, kingPos.file - 1},
-	{ kingPos.rank - 1, kingPos.file + 1 }, { kingPos.rank - 1, kingPos.file - 1}, { kingPos.rank - 1, kingPos.file } };
-
-	for (const auto& currPos : kingMoves)
+	for (const auto& currPos : Chess::getKingMoves(chessBoard, kingColor, kingPos))
 	{
 		const auto currPiece = chessBoard[currPos.rank][currPos.file];
 
-		if (currPiece.color == kingColor && currPiece.piece != Chess::Piece::None)
-		{
-			continue;
-		}
-		else
-		{
-			testChessBoard[kingPos.rank][kingPos.file] = ChessPiece{};
-			testChessBoard[currPos.rank][currPos.file] = ChessPiece{ Chess::Piece::King, kingColor };
+		testChessBoard[kingPos.rank][kingPos.file] = ChessPiece{};
+		testChessBoard[currPos.rank][currPos.file] = ChessPiece{ Chess::Piece::King, kingColor };
 
-			if (!canBeCaptured(testChessBoard, kingColor, currPos))
-			{
-				return false;
-			}
-
-			testChessBoard[currPos.rank][currPos.file] = currPiece;
-			testChessBoard[kingPos.rank][kingPos.file] = ChessPiece{ Chess::Piece::King, kingColor };
+		if (!canBeCaptured(testChessBoard, kingColor, currPos))
+		{
+			return false;
 		}
+
+		testChessBoard[currPos.rank][currPos.file] = currPiece;
+		testChessBoard[kingPos.rank][kingPos.file] = ChessPiece{ Chess::Piece::King, kingColor };
 	}
 
 	if (kingColor == Chess::Color::Light)

@@ -8,7 +8,7 @@ https://inversepalindrome.com/
 #include "ChessScene.hpp"
 #include "ChessUtility.hpp"
 #include "ChessResources.hpp"
-#include "ChessValidation.hpp"
+#include "ChessMoveValidation.hpp"
 #include "ChessBoardGraphicsItem.hpp"
 
 #include <QGraphicsSceneMouseEvent>
@@ -25,9 +25,8 @@ ChessScene::ChessScene(QObject* parent) :
 
 void ChessScene::populateScene()
 {
-    auto* graphicChessBoard = new ChessBoardGraphicsItem();
-
-    addItem(graphicChessBoard);
+	auto* graphicChessBoard = new ChessBoardGraphicsItem();
+	addItem(graphicChessBoard);
 
     setSceneRect(itemsBoundingRect());
 
@@ -49,11 +48,10 @@ void ChessScene::populateScene()
     }
 }
 
-void ChessScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+void ChessScene::resetScene()
 {
-    //auto* piece = getGraphicsPiece(event->scenePos());
-
-    QGraphicsScene::mouseMoveEvent(event);
+	chessBoard.resetBoard();
+	clear();
 }
 
 void ChessScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -99,6 +97,7 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 			graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), newPos));
 
 			updateKingPosition(movingPiece, newPos);
+			manageEndGame(newPos);
 			switchPlayer();
         }
         else
@@ -145,7 +144,7 @@ bool ChessScene::leavesKingInCheck(const ChessPiece& movingPiece, const Chess::P
 	{
 		kingPosition = newPos;
 	}
-	else if (movingPiece.color == Chess::Color::Light)
+	else if (currentPlayer == Chess::Color::Light)
 	{
 		kingPosition = lightKingPosition;
 	}
@@ -153,13 +152,31 @@ bool ChessScene::leavesKingInCheck(const ChessPiece& movingPiece, const Chess::P
 	{
 		kingPosition = darkKingPosition;
 	}
-
+	
 	if (Chess::canBeCaptured(testChessBoard, movingPiece.color, kingPosition))
 	{
 		return true;
 	}
 
 	return false;
+}
+
+void ChessScene::manageEndGame(const Chess::Position& attackerPos)
+{
+	if (currentPlayer == Chess::Color::Light)
+	{
+		if (Chess::isCheckmate(chessBoard, Chess::Color::Dark, darkKingPosition, attackerPos))
+		{
+			emit gameEnded(Chess::EndResult::LightWon);
+		}
+	}
+	else
+	{
+		if (Chess::isCheckmate(chessBoard, Chess::Color::Light, lightKingPosition, attackerPos))
+		{
+			emit gameEnded(Chess::EndResult::DarkWon);
+		}
+	}
 }
 
 void ChessScene::manageDrop(const ChessPiece& movingPiece, const Chess::Position& newPosition)
@@ -183,9 +200,8 @@ void ChessScene::managePromotion(ChessPiece& movingPiece, ChessPieceGraphicsItem
 	{
 		emit openPromotionDialog(movingPiece);
 
-		graphicsPiece->setPixmap(QPixmap(":/Resources/ChessPieces/"
-			+ QString::fromStdString(Chess::resources.at(movingPiece))).scaledToWidth(
-				Chess::PIECE_SIZE));
+		graphicsPiece->setPixmap(QPixmap(":/Resources/ChessPieces/"+ QString::fromStdString
+		(Chess::resources.at(movingPiece))).scaledToWidth(Chess::PIECE_SIZE));
 	}
 }
 

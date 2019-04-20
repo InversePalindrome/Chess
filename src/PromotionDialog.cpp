@@ -17,6 +17,7 @@ PromotionDialog::PromotionDialog(ChessPiece& promotedPiece, QWidget* parent) :
 {
 	setFixedSize(800, 300);
 	setWindowTitle("Pawn Promotion");
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	auto* layout = new QHBoxLayout(this);
 
