@@ -16,7 +16,7 @@ https://inversepalindrome.com/
 GameOverDialog::GameOverDialog(Chess::EndResult endResult, QWidget* parent) :
 	QDialog(parent, Qt::WindowTitleHint)
 {
-	setFixedSize(800, 600);
+	setFixedSize(600, 600);
 	setWindowTitle("Game Over");
 	setAttribute(Qt::WA_DeleteOnClose);
 

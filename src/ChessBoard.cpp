@@ -8,14 +8,9 @@ https://inversepalindrome.com/
 #include "ChessBoard.hpp"
 
 
-ChessBoard::ChessBoard()
+Chess::Board<ChessPiece> Chess::getInitialBoard()
 {
-    resetBoard();
-}
-
-void ChessBoard::resetBoard()
-{
-    board =
+    return
     {{
         { ChessPiece{ Chess::Piece::Rook, Chess::Color::Dark }, ChessPiece{ Chess::Piece::Knight, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Bishop, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Queen, Chess::Color::Dark}, ChessPiece{ Chess::Piece::King, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Bishop, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Knight, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Rook, Chess::Color::Dark} },
         { ChessPiece{ Chess::Piece::Pawn, Chess::Color::Dark }, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Dark}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Dark} },
@@ -26,14 +21,4 @@ void ChessBoard::resetBoard()
         { ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light }, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light}, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light }, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light }, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light }, ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light } },
         { ChessPiece{ Chess::Piece::Rook, Chess::Color::Light}, ChessPiece{ Chess::Piece::Knight, Chess::Color::Light}, ChessPiece{ Chess::Piece::Bishop, Chess::Color::Light}, ChessPiece{ Chess::Piece::Queen, Chess::Color::Light}, ChessPiece{ Chess::Piece::King, Chess::Color::Light }, ChessPiece{ Chess::Piece::Bishop, Chess::Color::Light }, ChessPiece{ Chess::Piece::Knight, Chess::Color::Light }, ChessPiece{ Chess::Piece::Rook, Chess::Color::Light } }
      }};
-}
-
-std::array<ChessPiece, Chess::RANKS>& ChessBoard::operator[](const std::size_t index)
-{
-    return board[static_cast<std::size_t>(index)];
-}
-
-const std::array<ChessPiece, Chess::RANKS>& ChessBoard::operator[](const std::size_t index) const
-{
-    return board[static_cast<std::size_t>(index)];
 }

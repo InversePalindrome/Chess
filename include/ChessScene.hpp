@@ -15,7 +15,6 @@ https://inversepalindrome.com/
 
 #include <QGraphicsScene>
 
-#include <array>
 #include <vector>
 
 
@@ -27,7 +26,7 @@ public:
     explicit ChessScene(QObject* parent = nullptr);
 
 	void populateScene();
-	void resetScene();
+	void clearScene();
 
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
@@ -38,6 +37,7 @@ private:
 	bool leavesKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
 
 	void manageEndGame(const Chess::Position& attackerPos);
+	void manageHistory(const ChessPiece& droppedPiece, const ChessPiece& promotedPiece, const Chess::Position& oldPos, const Chess::Position& newPos);
 	void manageDrop(const ChessPiece& movingPiece, const Chess::Position& newPos);
 	void managePromotion(ChessPiece& movingPiece, ChessPieceGraphicsItem* graphicsPiece, const Chess::Position& newPos);
 
@@ -47,14 +47,14 @@ private:
 
     ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
 
-    ChessBoard chessBoard;
+    Chess::Board<ChessPiece> chessBoard;
 	Chess::Position lightKingPosition;
 	Chess::Position darkKingPosition;
 	std::vector<Chess::Transition> chessHistory;
 	Chess::Color currentPlayer;
 
     QPointF sourcePosition;
-	std::array<std::array<ChessPieceGraphicsItem*, Chess::RANKS>, Chess::FILES> graphicsBoard;
+	Chess::Board<ChessPieceGraphicsItem*> graphicsBoard;
 
 signals:
 	void gameEnded(Chess::EndResult result);

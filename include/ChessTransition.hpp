@@ -22,15 +22,10 @@ namespace Chess
 		Chess::Position newPosition;
 	};
 
-	struct Drop
-	{
-		Chess::Position dropPosition;
-		ChessPiece droppedPiece;
-	};
-
 	struct Transition
 	{
 		std::vector<Move> moves;
-		Drop drop;
+		ChessPiece droppedPiece;
+		ChessPiece promotedPiece;
 	};
 }

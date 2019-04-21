@@ -16,6 +16,7 @@ https://inversepalindrome.com/
 
 ChessScene::ChessScene(QObject* parent) :
     QGraphicsScene(parent),
+	chessBoard(Chess::getInitialBoard()),
 	lightKingPosition{ Chess::RANKS - 1, 4 },
 	darkKingPosition{ 0, 4 },
 	currentPlayer(Chess::Color::Light)
@@ -48,10 +49,15 @@ void ChessScene::populateScene()
     }
 }
 
-void ChessScene::resetScene()
+void ChessScene::clearScene()
 {
-	chessBoard.resetBoard();
+	chessBoard = Chess::getInitialBoard();
+	chessHistory.clear();
 	clear();
+
+	lightKingPosition = { Chess::RANKS - 1, 4 };
+	darkKingPosition = { 0, 4 };
+	currentPlayer = Chess::Color::Light;
 }
 
 void ChessScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -82,17 +88,13 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 
 			manageDrop(movingPiece, newPos);
 			managePromotion(movingPiece, graphicsPiece, newPos);
+			manageHistory(chessBoard[newPos.rank][newPos.file], movingPiece, oldPos, newPos);
 			
 			chessBoard[oldPos.rank][oldPos.file] = ChessPiece{};
 			chessBoard[newPos.rank][newPos.file] = movingPiece;
 
 			graphicsBoard[oldPos.rank][oldPos.file] = nullptr;
 			graphicsBoard[newPos.rank][newPos.file] = graphicsPiece;
-
-			std::vector<Chess::Move> moves;
-			moves.push_back({ oldPos, newPos });
-
-			chessHistory.push_back({ moves, {} });
 
 			graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), newPos));
 
@@ -108,11 +110,22 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 		graphicsPiece->setFlag(QGraphicsItem::ItemIsMovable, false);
     }
 
-    QGraphicsScene::mouseReleaseEvent(event);
+	QGraphicsScene::mouseReleaseEvent(event);
 }
 
 bool ChessScene::canMove(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const
 {
+	if ((movingPiece.piece == Chess::Piece::King && Chess::isCastlingMoveValid(chessBoard, oldPos, newPos)) ||
+		(movingPiece.piece == Chess::Piece::Pawn && Chess::isEnPassantValid(chessBoard,
+		chessHistory, movingPiece.color, oldPos, newPos)))
+	{
+		return true;
+	}
+	if (!Chess::isPieceMoveValid(chessBoard, movingPiece.color, newPos))
+	{
+		return false;
+	}
+
     switch(movingPiece.piece)
     {
         case Chess::Piece::Pawn:
@@ -167,16 +180,25 @@ void ChessScene::manageEndGame(const Chess::Position& attackerPos)
 	{
 		if (Chess::isCheckmate(chessBoard, Chess::Color::Dark, darkKingPosition, attackerPos))
 		{
-			emit gameEnded(Chess::EndResult::LightWon);
+			//emit gameEnded(Chess::EndResult::LightWon);
 		}
 	}
 	else
 	{
 		if (Chess::isCheckmate(chessBoard, Chess::Color::Light, lightKingPosition, attackerPos))
 		{
-			emit gameEnded(Chess::EndResult::DarkWon);
+			//emit gameEnded(Chess::EndResult::DarkWon);
 		}
 	}
+}
+
+void ChessScene::manageHistory(const ChessPiece& droppedPiece, const ChessPiece& promotedPiece,
+	const Chess::Position& oldPos, const Chess::Position& newPos)
+{
+	std::vector<Chess::Move> moves;
+	moves.push_back({ oldPos, newPos });
+
+	chessHistory.push_back({ moves, droppedPiece, promotedPiece });
 }
 
 void ChessScene::manageDrop(const ChessPiece& movingPiece, const Chess::Position& newPosition)

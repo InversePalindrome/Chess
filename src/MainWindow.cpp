@@ -30,7 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	{
 		transitionToMenu(chessScene);
 	});
-
+;
 	connect(chessScene, &ChessScene::openPromotionDialog, [this](auto & piece)
 	{
 		auto* dialog = new PromotionDialog(piece, this);
@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
 		});
 		connect(dialog, &GameOverDialog::playAgain, [this, chessScene]()
 		{ 
-			chessScene->resetScene();
+			chessScene->clearScene();
 			transitionToGame(chessScene);
 		});
 		dialog->exec();
@@ -63,7 +63,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::transitionToMenu(ChessScene* chessScene)
 {
-	chessScene->resetScene();
+	chessScene->clearScene();
 
     ui->stackWidget->setCurrentIndex(0);
     ui->toolBar->setVisible(false);

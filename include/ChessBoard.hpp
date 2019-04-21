@@ -13,16 +13,11 @@ https://inversepalindrome.com/
 #include <array>
 
 
-class ChessBoard
-{  
-public:
-    ChessBoard();
+namespace Chess
+{
+	template<typename T>
+	using Board = std::array<std::array<T, Chess::RANKS>, Chess::FILES>;
 
-    void resetBoard();
+	Board<ChessPiece> getInitialBoard();
+}
 
-    std::array<ChessPiece, Chess::RANKS>& operator[](const std::size_t index);
-    const std::array<ChessPiece, Chess::RANKS>& operator[](const std::size_t index) const;
-
-private:
-    std::array<std::array<ChessPiece, Chess::RANKS>, Chess::FILES> board;
-};
