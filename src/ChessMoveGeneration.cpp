@@ -123,7 +123,7 @@ std::vector<Chess::Position> Chess::getBishopMoves(const Chess::Board<ChessPiece
 	}
 
 	for (auto currPos = Chess::Position{ pos.rank + 1, pos.file - 1 };
-		currPos.rank < Chess::RANKS && currPos.file + 1 > 0; ++currPos.rank, --currPos.file)
+		currPos.rank < Chess::RANKS && currPos.file >= 0; ++currPos.rank, --currPos.file)
 	{
 		const auto currPiece = chessBoard[currPos.rank][currPos.file];
 
@@ -143,7 +143,7 @@ std::vector<Chess::Position> Chess::getBishopMoves(const Chess::Board<ChessPiece
 	}
 
 	for (auto currPos = Chess::Position{ pos.rank - 1, pos.file - 1 };
-		currPos.rank + 1 > 0 && currPos.file + 1 > 0; --currPos.rank, --currPos.file)
+		currPos.rank >= 0 && currPos.file >= 0; --currPos.rank, --currPos.file)
 	{
 		const auto currPiece = chessBoard[currPos.rank][currPos.file];
 
@@ -163,7 +163,7 @@ std::vector<Chess::Position> Chess::getBishopMoves(const Chess::Board<ChessPiece
 	}
 
 	for (auto currPos = Chess::Position{ pos.rank - 1, pos.file + 1 };
-		currPos.rank + 1 > 0 && currPos.file < Chess::FILES; --currPos.rank, ++currPos.file)
+		currPos.rank >= 0 && currPos.file < Chess::FILES; --currPos.rank, ++currPos.file)
 	{
 		const auto currPiece = chessBoard[currPos.rank][currPos.file];
 
@@ -190,7 +190,7 @@ std::vector<Chess::Position> Chess::getRookMoves(const Chess::Board<ChessPiece>&
 {
 	std::vector<Chess::Position> moves;
 
-	for (std::size_t currFile = pos.file + 1; currFile < Chess::FILES; ++currFile)
+	for (auto currFile = pos.file + 1; currFile < Chess::FILES; ++currFile)
 	{
 		const auto currPiece = chessBoard[pos.rank][currFile];
 
@@ -209,7 +209,7 @@ std::vector<Chess::Position> Chess::getRookMoves(const Chess::Board<ChessPiece>&
 		}
 	}
 
-	for (std::size_t currFile = pos.file - 1; currFile >= 0; --currFile)
+	for (auto currFile = pos.file - 1; currFile >= 0; --currFile)
 	{
 		const auto currPiece = chessBoard[pos.rank][currFile];
 
@@ -228,7 +228,7 @@ std::vector<Chess::Position> Chess::getRookMoves(const Chess::Board<ChessPiece>&
 		}
 	}
 
-	for (std::size_t currRank = pos.rank + 1; currRank < Chess::RANKS; ++currRank)
+	for (auto currRank = pos.rank + 1; currRank < Chess::RANKS; ++currRank)
 	{
 		const auto currPiece = chessBoard[currRank][pos.file];
 
@@ -247,7 +247,7 @@ std::vector<Chess::Position> Chess::getRookMoves(const Chess::Board<ChessPiece>&
 		}
 	}
 
-	for (std::size_t currRank = pos.rank - 1; currRank >= 0; --currRank)
+	for (auto currRank = pos.rank - 1; currRank >= 0; --currRank)
 	{
 		const auto currPiece = chessBoard[currRank][pos.file];
 

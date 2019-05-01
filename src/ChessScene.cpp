@@ -16,24 +16,24 @@ https://inversepalindrome.com/
 
 ChessScene::ChessScene(QObject* parent) :
     QGraphicsScene(parent),
-	chessBoard(Chess::getInitialBoard()),
-	lightKingPosition{ Chess::RANKS - 1, 4 },
-	darkKingPosition{ 0, 4 },
-	currentPlayer(Chess::Color::Light)
+    chessBoard(Chess::getInitialBoard()),
+    lightKingPosition{ Chess::RANKS - 1, 4 },
+    darkKingPosition{ 0, 4 },
+    currentPlayer(Chess::Color::Light)
 {
     populateScene();
 }
 
 void ChessScene::populateScene()
 {
-	auto* graphicChessBoard = new ChessBoardGraphicsItem();
-	addItem(graphicChessBoard);
+    auto* graphicChessBoard = new ChessBoardGraphicsItem();
+    addItem(graphicChessBoard);
 
     setSceneRect(itemsBoundingRect());
 
-    for(std::size_t rank = 0; rank < Chess::RANKS; ++rank)
+    for(auto rank = 0; rank < Chess::RANKS; ++rank)
     {
-        for(std::size_t file = 0; file < Chess::FILES; ++file)
+        for(auto file = 0; file < Chess::FILES; ++file)
         {
             if(Chess::resources.count(chessBoard[rank][file]))
             {
@@ -41,9 +41,9 @@ void ChessScene::populateScene()
                                      + QString::fromStdString(Chess::resources.at(chessBoard[rank][file]))).scaledToWidth(
                                      Chess::PIECE_SIZE), graphicChessBoard);
 				
-				graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), Chess::Position{rank, file}));
+			    graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), Chess::Position{rank, file}));
 
-				graphicsBoard[rank][file] = graphicsPiece;
+			    graphicsBoard[rank][file] = graphicsPiece;
             }
         }
     }
@@ -51,24 +51,24 @@ void ChessScene::populateScene()
 
 void ChessScene::clearScene()
 {
-	chessBoard = Chess::getInitialBoard();
-	chessHistory.clear();
-	clear();
+    chessBoard = Chess::getInitialBoard();
+    chessHistory.clear();
+    clear();
 
-	lightKingPosition = { Chess::RANKS - 1, 4 };
-	darkKingPosition = { 0, 4 };
-	currentPlayer = Chess::Color::Light;
+    lightKingPosition = { Chess::RANKS - 1, 4 };
+    darkKingPosition = { 0, 4 };
+    currentPlayer = Chess::Color::Light;
 }
 
 void ChessScene::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-	if (auto * graphicsPiece = getGraphicsPiece(event->scenePos()); graphicsPiece != nullptr &&
-		graphicsPiece->getChessPiece().color == currentPlayer && event->button() == Qt::LeftButton)
-	{
-		sourcePosition = event->scenePos();
+    if (auto * graphicsPiece = getGraphicsPiece(event->scenePos()); graphicsPiece != nullptr &&
+	    graphicsPiece->getChessPiece().color == currentPlayer && event->button() == Qt::LeftButton)
+    {
+	    sourcePosition = event->scenePos();
 
-		graphicsPiece->setFlag(QGraphicsItem::ItemIsMovable, true);
-	}
+	    graphicsPiece->setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
 
     QGraphicsScene::mousePressEvent(event);
 }
@@ -80,51 +80,51 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
     {
         const auto oldPos = Chess::getChessPositionAt(sourcePosition);
         const auto newPos = Chess::getChessPositionAt(event->scenePos());
-		auto movingPiece = chessBoard[oldPos.rank][oldPos.file];
+	    auto movingPiece = chessBoard[oldPos.rank][oldPos.file];
 		
         if(canMove(movingPiece, oldPos, newPos) && !leavesKingInCheck(movingPiece, oldPos, newPos))
         {
-			movingPiece.hasMoved = true;
+		    movingPiece.hasMoved = true;
 
-			manageDrop(movingPiece, newPos);
-			managePromotion(movingPiece, graphicsPiece, newPos);
-			manageHistory(chessBoard[newPos.rank][newPos.file], movingPiece, oldPos, newPos);
+		    manageDrop(movingPiece, newPos);
+		    managePromotion(movingPiece, graphicsPiece, newPos);
+		    manageHistory(chessBoard[newPos.rank][newPos.file], movingPiece, oldPos, newPos);
 			
-			chessBoard[oldPos.rank][oldPos.file] = ChessPiece{};
-			chessBoard[newPos.rank][newPos.file] = movingPiece;
+		    chessBoard[oldPos.rank][oldPos.file] = ChessPiece{};
+		    chessBoard[newPos.rank][newPos.file] = movingPiece;
 
-			graphicsBoard[oldPos.rank][oldPos.file] = nullptr;
-			graphicsBoard[newPos.rank][newPos.file] = graphicsPiece;
+		    graphicsBoard[oldPos.rank][oldPos.file] = nullptr;
+		    graphicsBoard[newPos.rank][newPos.file] = graphicsPiece;
 
-			graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), newPos));
+		    graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), newPos));
 
-			updateKingPosition(movingPiece, newPos);
-			manageEndGame(newPos);
-			switchPlayer();
+		    updateKingPosition(movingPiece, newPos);
+		    manageEndGame(newPos);
+		    switchPlayer();
         }
         else
         {
-			graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), oldPos));
+		    graphicsPiece->setPos(Chess::getGraphicsPosition(sceneRect(), oldPos));
         }
 
-		graphicsPiece->setFlag(QGraphicsItem::ItemIsMovable, false);
+	    graphicsPiece->setFlag(QGraphicsItem::ItemIsMovable, false);
     }
 
-	QGraphicsScene::mouseReleaseEvent(event);
+    QGraphicsScene::mouseReleaseEvent(event);
 }
 
 bool ChessScene::canMove(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const
 {
-	if ((movingPiece.piece == Chess::Piece::King && Chess::isCastlingMoveValid(chessBoard, oldPos, newPos)) ||
-		(movingPiece.piece == Chess::Piece::Pawn && Chess::isEnPassantValid(chessBoard,
-		chessHistory, movingPiece.color, oldPos, newPos)))
-	{
-		return true;
-	}
-	if (!Chess::isPieceMoveValid(chessBoard, movingPiece.color, newPos))
-	{
-		return false;
-	}
+    if ((movingPiece.piece == Chess::Piece::King && Chess::isCastlingMoveValid(chessBoard, oldPos, newPos)) ||
+	   (movingPiece.piece == Chess::Piece::Pawn && Chess::isEnPassantValid(chessBoard,
+	   chessHistory, movingPiece.color, oldPos, newPos)))
+    {
+	    return true;
+    }
+    if (!Chess::isPieceMoveValid(chessBoard, movingPiece.color, newPos))
+    {
+	    return false;
+    }
 
     switch(movingPiece.piece)
     {
@@ -180,14 +180,14 @@ void ChessScene::manageEndGame(const Chess::Position& attackerPos)
 	{
 		if (Chess::isCheckmate(chessBoard, Chess::Color::Dark, darkKingPosition, attackerPos))
 		{
-			//emit gameEnded(Chess::EndResult::LightWon);
+			emit gameEnded(Chess::EndResult::LightWon);
 		}
 	}
 	else
 	{
 		if (Chess::isCheckmate(chessBoard, Chess::Color::Light, lightKingPosition, attackerPos))
 		{
-			//emit gameEnded(Chess::EndResult::DarkWon);
+			emit gameEnded(Chess::EndResult::DarkWon);
 		}
 	}
 }
@@ -244,14 +244,14 @@ void ChessScene::updateKingPosition(const ChessPiece& movingPiece, const Chess::
 
 void ChessScene::switchPlayer()
 {
-	if (currentPlayer == Chess::Color::Light)
-	{
-		currentPlayer = Chess::Color::Dark;
-	}
-	else
-	{
-		currentPlayer = Chess::Color::Light;
-	}
+    if (currentPlayer == Chess::Color::Light)
+    {
+	    currentPlayer = Chess::Color::Dark;
+    }
+    else
+    {
+	    currentPlayer = Chess::Color::Light;
+    }
 }
 
 ChessPieceGraphicsItem* ChessScene::getGraphicsPiece(const QPointF& position)

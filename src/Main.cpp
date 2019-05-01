@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     mainWindow.setWindowTitle("Chess");
     mainWindow.setFixedSize(1600, 1600);
 
-    auto const SPLASH_TIME = 2000;
+    const auto SPLASH_TIME = 2000;
 
     QTimer::singleShot(SPLASH_TIME, splashScreen, SLOT(close()));
     QTimer::singleShot(SPLASH_TIME, &mainWindow, SLOT(show()));

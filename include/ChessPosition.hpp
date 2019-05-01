@@ -14,8 +14,8 @@ namespace Chess
 {
     struct Position
     {
-        std::size_t rank = 0;
-        std::size_t file = 0;
+        int rank = -1;
+        int file = -1;
 
         bool operator==(const Position& position) const;
         bool operator!=(const Position& position) const;

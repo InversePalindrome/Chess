@@ -17,7 +17,7 @@ namespace Chess
 {
 	const std::unordered_map<ChessPiece, std::string, ChessPieceHash> resources =
 	{	
-		{ ChessPiece{Chess::Piece::Pawn, Chess::Color::Light }, "LightPawn.png" },
+		{ ChessPiece{ Chess::Piece::Pawn, Chess::Color::Light }, "LightPawn.png" },
 		{ ChessPiece{ Chess::Piece::Knight, Chess::Color::Light }, "LightKnight.png" },
 		{ ChessPiece{ Chess::Piece::Bishop, Chess::Color::Light }, "LightBishop.png" },
 		{ ChessPiece{ Chess::Piece::Rook, Chess::Color::Light }, "LightRook.png" },

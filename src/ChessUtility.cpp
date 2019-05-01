@@ -17,13 +17,11 @@ Chess::Position Chess::getChessPositionAt(const QPointF& position)
 
     if(!chessRect.contains(position))
     {
-        return Chess::Position{};
+        return {};
     }
 
-	auto rank = static_cast<std::size_t>((position.y() + chessRect.height() / 2) / Chess::SQUARE_SIZE);
-    auto file = static_cast<std::size_t>((position.x() + chessRect.width() / 2) / Chess::SQUARE_SIZE);
-
-    return Chess::Position{ rank, file };
+    return { static_cast<int>((position.y() + chessRect.height() / 2) / Chess::SQUARE_SIZE) ,
+             static_cast<int>((position.x() + chessRect.width() / 2) / Chess::SQUARE_SIZE) };
 }
 
 QPointF Chess::getGraphicsPosition(const QRectF& sceneRect, const Chess::Position& chessPosition)
