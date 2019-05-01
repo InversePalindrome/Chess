@@ -37,10 +37,11 @@ namespace Chess
 
     bool isKingMoveValid(const Chess::Position& oldPos, const Chess::Position& newPos);
 
-	bool canBeCaptured(const Chess::Board<ChessPiece>& chessBoard, Chess::Color kingColor, const Chess::Position& kingPos);
+	bool canBeCaptured(const Chess::Board<ChessPiece>& chessBoard, Chess::Color kingColor, 
+        const Chess::Position& kingPos);
 
-	bool isCheckmate(const Chess::Board<ChessPiece>& chessBoard, Chess::Color kingColor,
-		const Chess::Position& kingPos, const Chess::Position& attackerPos);
+	bool hasValidMoves(const Chess::Board<ChessPiece>& chessBoard, Chess::Color kingColor,
+		const Chess::Position& kingPos);
 
 	bool isPawnPromoted(const Chess::Position& newPos);
 }

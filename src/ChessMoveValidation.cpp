@@ -480,8 +480,8 @@ bool Chess::canBeCaptured(const Chess::Board<ChessPiece>& chessBoard,
 	return false;
 }
 
-bool Chess::isCheckmate(const Chess::Board<ChessPiece>& chessBoard, 
-	Chess::Color kingColor, const Chess::Position& kingPos, const Chess::Position& attackerPos)
+bool Chess::hasValidMoves(const Chess::Board<ChessPiece>& chessBoard, 
+	Chess::Color kingColor, const Chess::Position& kingPos)
 {
     for (auto rank = 0; rank < Chess::RANKS; ++rank)
     {
@@ -511,19 +511,19 @@ bool Chess::isCheckmate(const Chess::Board<ChessPiece>& chessBoard,
                     validPositions = Chess::getKingMoves(chessBoard, kingColor, pos);
                     break;
                 }
-
+       
                 for (const auto& pos : validPositions)
                 {
                     if (!canBeCaptured(chessBoard, kingColor, pos))
                     {
-                        return false;
+                        return true;
                     }
                 }
             }
         }
     }
 
-	return true;
+	return false;
 }
 
 bool Chess::isPawnPromoted(const Chess::Position& newPos)

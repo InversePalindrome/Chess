@@ -6,6 +6,7 @@ https://inversepalindrome.com/
 
 
 #include "MainWindow.hpp"
+#include "ChessScene.hpp"
 #include "ui_MainWindow.h"
 #include "GameOverDialog.hpp"
 #include "PromotionDialog.hpp"
@@ -22,38 +23,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->chessView->setRenderHint(QPainter::Antialiasing);
     ui->chessView->setMouseTracking(true);
     ui->chessView->show();
-
-	auto* chessScene = new ChessScene();
-	ui->chessView->setScene(chessScene);
-
-	ui->toolBar->addAction(QIcon(":/Resources/HomeIcon.png"), "Menu", [this, chessScene]()
+	ui->toolBar->addAction(QIcon(":/Resources/HomeIcon.png"), "Menu", [this]()
 	{
-		transitionToMenu(chessScene);
+		transitionToMenu();
 	});
-;
-	connect(chessScene, &ChessScene::openPromotionDialog, [this](auto & piece)
-	{
-		auto* dialog = new PromotionDialog(piece, this);
-		dialog->exec();
-	});
-	connect(chessScene, &ChessScene::gameEnded, [this, chessScene](auto result)
-	{
-		auto* dialog = new GameOverDialog(result, this);
-		connect(dialog, &GameOverDialog::transitionToMenu, [this, chessScene]()
-		{ 
-			transitionToMenu(chessScene); 
-		});
-		connect(dialog, &GameOverDialog::playAgain, [this, chessScene]()
-		{ 
-			chessScene->clearScene();
-			transitionToGame(chessScene);
-		});
-		dialog->exec();
-	});
-    connect(ui->playButton, &QPushButton::clicked, [this, chessScene]()
-	{ 
-		transitionToGame(chessScene);
-	});
+    connect(ui->playButton, &QPushButton::clicked, [this]()
+    {
+       transitionToGame();
+    });
 }
 
 MainWindow::~MainWindow()
@@ -61,17 +38,37 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::transitionToMenu(ChessScene* chessScene)
+void MainWindow::transitionToMenu()
 {
-	chessScene->clearScene();
+    ui->chessView->scene()->deleteLater();
 
     ui->stackWidget->setCurrentIndex(0);
     ui->toolBar->setVisible(false);
 }
 
-void MainWindow::transitionToGame(ChessScene* chessScene)
+void MainWindow::transitionToGame()
 {
-	chessScene->populateScene();
+    auto* chessScene = new ChessScene();
+    ui->chessView->setScene(chessScene);
+
+    connect(chessScene, &ChessScene::openPromotionDialog, [this](auto & piece)
+    {
+        auto* dialog = new PromotionDialog(piece, this);
+        dialog->exec();
+    });
+    connect(chessScene, &ChessScene::gameEnded, [this](auto result)
+    {
+        auto* dialog = new GameOverDialog(result, this);
+        connect(dialog, &GameOverDialog::transitionToMenu, [this]()
+        {
+             transitionToMenu();
+        });
+        connect(dialog, &GameOverDialog::playAgain, [this]()
+        {
+              transitionToGame();
+        });
+        dialog->exec();
+    });
 
     ui->stackWidget->setCurrentIndex(1);
     ui->toolBar->setVisible(true);

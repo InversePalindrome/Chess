@@ -25,23 +25,23 @@ class ChessScene : public QGraphicsScene
 public:
     explicit ChessScene(QObject* parent = nullptr);
 
-	void populateScene();
-	void clearScene();
-
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
     bool canMove(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
-	bool leavesKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
+    bool isKingInCheck(Chess::Color kingColor) const;
+	bool isKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
 
-	void manageEndGame(const Chess::Position& attackerPos);
-	void manageHistory(const ChessPiece& droppedPiece, const ChessPiece& promotedPiece, const Chess::Position& oldPos, const Chess::Position& newPos);
+	void manageHistory(const ChessPiece& droppedPiece, const ChessPiece& promotedPiece, 
+        const Chess::Position& oldPos, const Chess::Position& newPos);
 	void manageDrop(const ChessPiece& movingPiece, const Chess::Position& newPos);
-	void managePromotion(ChessPiece& movingPiece, ChessPieceGraphicsItem* graphicsPiece, const Chess::Position& newPos);
+	void managePromotion(ChessPiece& movingPiece, ChessPieceGraphicsItem* graphicsPiece, 
+        const Chess::Position& newPos);
 
 	void updateKingPosition(const ChessPiece& movingPiece, const Chess::Position newPos);
+    void updateEndGame() const;
 
 	void switchPlayer();
 
@@ -57,6 +57,6 @@ private:
 	Chess::Board<ChessPieceGraphicsItem*> graphicsBoard;
 
 signals:
-	void gameEnded(Chess::EndResult result);
+	void gameEnded(Chess::EndResult result) const;
 	void openPromotionDialog(ChessPiece& movingPiece);
 };
