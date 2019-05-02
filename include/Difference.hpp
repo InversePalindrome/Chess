@@ -11,8 +11,8 @@ https://inversepalindrome.com/
 namespace Utility
 {
     template<typename T>
-    T diff(const T& a, const T& b) 
+    T diff(const T& a, const T& b)
     {
-	    return (a > b) ? (a - b) : (b - a);
+        return (a > b) ? (a - b) : (b - a);
     }
 }

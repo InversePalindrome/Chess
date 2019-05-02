@@ -48,7 +48,7 @@ GameOverDialog::GameOverDialog(Chess::EndResult endResult, QWidget* parent) :
 
     auto* menuButton = new QPushButton("Menu", this);
     menuButton->setFont(QFont("Bebas", 24, QFont::Bold));
-    connect(menuButton, &QPushButton::clicked, 
+    connect(menuButton, &QPushButton::clicked,
         [this]()
         {
             emit transitionToMenu();

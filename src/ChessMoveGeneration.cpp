@@ -9,22 +9,22 @@ https://inversepalindrome.com/
 
 
 std::vector<Chess::Position> Chess::getPawnMoves(const Chess::Board<ChessPiece>& chessBoard,
-	Chess::Color pawnColor, const Chess::Position& pos, bool hasMoved)
+    Chess::Color pawnColor, const Chess::Position& pos, bool hasMoved)
 {
     std::vector<Chess::Position> moves;
 
     if (pawnColor == Chess::Color::Light)
     {
-        if (!hasMoved && chessBoard[pos.rank - 1][pos.file].piece == Chess::Piece::None
+        if (!hasMoved && pos.rank > 1 && chessBoard[pos.rank - 1][pos.file].piece == Chess::Piece::None
             && chessBoard[pos.rank - 2][pos.file].piece == Chess::Piece::None)
         {
             moves.push_back({ pos.rank - 2, pos.file });
         }
-        if (chessBoard[pos.rank - 1][pos.file].piece == Chess::Piece::None)
+        if (pos.rank > 0 && chessBoard[pos.rank - 1][pos.file].piece == Chess::Piece::None)
         {
             moves.push_back({ pos.rank - 1, pos.file });
         }
-        if (pos.file > 0)
+        if (pos.rank > 0 && pos.file > 0)
         {
             if (const auto targetPiece = chessBoard[pos.rank - 1][pos.file - 1];
                 targetPiece.piece != Chess::Piece::None && targetPiece.color != pawnColor)
@@ -32,7 +32,7 @@ std::vector<Chess::Position> Chess::getPawnMoves(const Chess::Board<ChessPiece>&
                 moves.push_back({ pos.rank - 1, pos.file - 1 });
             }
         }
-        if (pos.file < Chess::FILES - 1)
+        if (pos.rank > 0 && pos.file < Chess::FILES - 1)
         {
             if (const auto targetPiece = chessBoard[pos.rank - 1][pos.file + 1];
                 targetPiece.piece != Chess::Piece::None && targetPiece.color != pawnColor)
@@ -43,16 +43,16 @@ std::vector<Chess::Position> Chess::getPawnMoves(const Chess::Board<ChessPiece>&
     }
     else
     {
-        if (!hasMoved && chessBoard[pos.rank + 1][pos.file].piece == Chess::Piece::None
-            && chessBoard[pos.rank + 2][pos.file].piece == Chess::Piece::None)
+        if (!hasMoved && pos.rank < Chess::RANKS - 2 && chessBoard[pos.rank + 1][pos.file].piece
+            == Chess::Piece::None && chessBoard[pos.rank + 2][pos.file].piece == Chess::Piece::None)
         {
             moves.push_back({ pos.rank + 2, pos.file });
         }
-        if (chessBoard[pos.rank + 1][pos.file].piece == Chess::Piece::None)
+        if (pos.rank < Chess::RANKS - 1 && chessBoard[pos.rank + 1][pos.file].piece == Chess::Piece::None)
         {
             moves.push_back({ pos.rank + 1, pos.file });
         }
-        if (pos.file > 0)
+        if (pos.rank < Chess::RANKS - 1 && pos.file > 0)
         {
             if (const auto targetPiece = chessBoard[pos.rank + 1][pos.file - 1];
                 targetPiece.piece != Chess::Piece::None && targetPiece.color != pawnColor)
@@ -60,7 +60,7 @@ std::vector<Chess::Position> Chess::getPawnMoves(const Chess::Board<ChessPiece>&
                 moves.push_back({ pos.rank + 1, pos.file - 1 });
             }
         }
-        if (pos.file < Chess::FILES - 1)
+        if (pos.rank < Chess::RANKS - 1 && pos.file < Chess::FILES - 1)
         {
             if (const auto targetPiece = chessBoard[pos.rank + 1][pos.file + 1];
                 targetPiece.piece != Chess::Piece::None && targetPiece.color != pawnColor)
@@ -185,8 +185,8 @@ std::vector<Chess::Position> Chess::getBishopMoves(const Chess::Board<ChessPiece
     return moves;
 }
 
-std::vector<Chess::Position> Chess::getRookMoves(const Chess::Board<ChessPiece>& chessBoard,
-	Chess::Color color, const Chess::Position& pos)
+std::vector<Chess::Position> Chess::getRookMoves(const Chess::Board<ChessPiece> & chessBoard,
+    Chess::Color color, const Chess::Position & pos)
 {
     std::vector<Chess::Position> moves;
 
@@ -269,8 +269,8 @@ std::vector<Chess::Position> Chess::getRookMoves(const Chess::Board<ChessPiece>&
     return moves;
 }
 
-std::vector<Chess::Position> Chess::getQueenMoves(const Chess::Board<ChessPiece>& chessBoard,
-    Chess::Color color, const Chess::Position& pos)
+std::vector<Chess::Position> Chess::getQueenMoves(const Chess::Board<ChessPiece> & chessBoard,
+    Chess::Color color, const Chess::Position & pos)
 {
     auto moves = getBishopMoves(chessBoard, color, pos);
     auto rookMoves = getRookMoves(chessBoard, color, pos);
@@ -280,8 +280,8 @@ std::vector<Chess::Position> Chess::getQueenMoves(const Chess::Board<ChessPiece>
     return moves;
 }
 
-std::vector<Chess::Position> Chess::getKingMoves(const Chess::Board<ChessPiece>& chessBoard,
-    Chess::Color color, const Chess::Position& pos)
+std::vector<Chess::Position> Chess::getKingMoves(const Chess::Board<ChessPiece> & chessBoard,
+    Chess::Color color, const Chess::Position & pos)
 {
     std::vector<Chess::Position> moves;
 

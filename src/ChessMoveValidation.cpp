@@ -10,33 +10,6 @@ https://inversepalindrome.com/
 #include "ChessMoveGeneration.hpp"
 
 
-bool Chess::isEnPassantValid(const Chess::Board<ChessPiece>& chessBoard, const std::vector<Chess::Transition>& history,
-    Chess::Color pawnColor, const Chess::Position& oldPos, const Chess::Position& newPos)
-{
-    if (pawnColor == Chess::Color::Light)
-    {
-        if (newPos.rank == oldPos.rank - 1)
-        {
-            //return true;
-        }
-    }
-    else
-    {
-        if (newPos.rank == oldPos.rank + 1)
-        {
-            //return true;
-        }
-    }
-
-    return false;
-}
-
-bool Chess::isCastlingMoveValid(const Chess::Board<ChessPiece>& chessBoard,
-    const Chess::Position& oldPos, const Chess::Position& newPos)
-{
-    return false;
-}
-
 bool Chess::isPieceMoveValid(const Chess::Board<ChessPiece>& chessBoard,
     Chess::Color pieceColor, const Chess::Position& newPos)
 {
@@ -247,6 +220,33 @@ bool Chess::isKingMoveValid(const Chess::Position& oldPos, const Chess::Position
         || (rankDiff == 1 && fileDiff == 0);
 }
 
+bool Chess::isEnPassantValid(const Chess::Board<ChessPiece> & chessBoard, const std::vector<Chess::Transition> & history,
+    Chess::Color pawnColor, const Chess::Position & oldPos, const Chess::Position & newPos)
+{
+    if (pawnColor == Chess::Color::Light)
+    {
+        if (newPos.rank == oldPos.rank - 1)
+        {
+            //return true;
+        }
+    }
+    else
+    {
+        if (newPos.rank == oldPos.rank + 1)
+        {
+            //return true;
+        }
+    }
+
+    return false;
+}
+
+bool Chess::isCastlingMoveValid(const Chess::Board<ChessPiece> & chessBoard,
+    const Chess::Position & oldPos, const Chess::Position & newPos)
+{
+    return false;
+}
+
 bool Chess::canBeCaptured(const Chess::Board<ChessPiece> & chessBoard,
     Chess::Color pieceColor, const Chess::Position & piecePos)
 {
@@ -440,7 +440,7 @@ bool Chess::canBeCaptured(const Chess::Board<ChessPiece> & chessBoard,
 
     if (pieceColor == Chess::Color::Dark)
     {
-        if (piecePos.rank <= Chess::RANKS - 1 && piecePos.file > 0)
+        if (piecePos.rank < Chess::RANKS - 1 && piecePos.file > 0)
         {
             if (const auto currPiece = chessBoard[piecePos.rank + 1][piecePos.file - 1];
                 currPiece.color != pieceColor && currPiece.piece == Chess::Piece::Pawn)
@@ -448,7 +448,7 @@ bool Chess::canBeCaptured(const Chess::Board<ChessPiece> & chessBoard,
                 return true;
             }
         }
-        else if (piecePos.rank <= Chess::RANKS - 1 && piecePos.file < Chess::FILES - 1)
+        else if (piecePos.rank < Chess::RANKS - 1 && piecePos.file < Chess::FILES - 1)
         {
             if (const auto currPiece = chessBoard[piecePos.rank + 1][piecePos.file + 1];
                 currPiece.color != pieceColor && currPiece.piece == Chess::Piece::Pawn)
@@ -512,9 +512,9 @@ bool Chess::hasValidMoves(const Chess::Board<ChessPiece> & chessBoard,
                     break;
                 }
 
-                for (const auto& pos : validPositions)
+                for (const auto& validPos : validPositions)
                 {
-                    if (!canBeCaptured(chessBoard, kingColor, pos))
+                    if (!canBeCaptured(chessBoard, kingColor, validPos))
                     {
                         return true;
                     }

@@ -18,14 +18,14 @@ namespace Chess
 {
     struct Move
     {
-	    Chess::Position oldPosition;
-	    Chess::Position newPosition;
+        Chess::Position oldPosition;
+        Chess::Position newPosition;
     };
 
     struct Transition
     {
-	    std::vector<Move> moves;
-	    ChessPiece droppedPiece;
-	    ChessPiece promotedPiece;
+        std::vector<Move> moves;
+        ChessPiece droppedPiece;
+        ChessPiece promotedPiece;
     };
 }

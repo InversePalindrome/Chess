@@ -32,12 +32,12 @@ protected:
 private:
     bool canMove(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
     bool isKingInCheck(Chess::Color kingColor) const;
-	bool isKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
+    bool isKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
 
-    void manageHistory(const ChessPiece& droppedPiece, const ChessPiece& promotedPiece, 
+    void manageHistory(const ChessPiece& droppedPiece, const ChessPiece& promotedPiece,
         const Chess::Position& oldPos, const Chess::Position& newPos);
     void manageDrop(const ChessPiece& movingPiece, const Chess::Position& newPos);
-    void managePromotion(ChessPiece& movingPiece, ChessPieceGraphicsItem* graphicsPiece, 
+    void managePromotion(ChessPiece& movingPiece, ChessPieceGraphicsItem* graphicsPiece,
         const Chess::Position& newPos);
 
     void updateKingPosition(const ChessPiece& movingPiece, const Chess::Position newPos);
