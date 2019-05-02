@@ -16,16 +16,16 @@ https://inversepalindrome.com/
 
 namespace Chess
 {
-	struct Move
-	{
-		Chess::Position oldPosition;
-		Chess::Position newPosition;
-	};
+    struct Move
+    {
+	    Chess::Position oldPosition;
+	    Chess::Position newPosition;
+    };
 
-	struct Transition
-	{
-		std::vector<Move> moves;
-		ChessPiece droppedPiece;
-		ChessPiece promotedPiece;
-	};
+    struct Transition
+    {
+	    std::vector<Move> moves;
+	    ChessPiece droppedPiece;
+	    ChessPiece promotedPiece;
+    };
 }

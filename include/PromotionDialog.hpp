@@ -14,8 +14,8 @@ https://inversepalindrome.com/
 
 class PromotionDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PromotionDialog(ChessPiece& promotedPiece, QWidget* parent = nullptr);
+    explicit PromotionDialog(ChessPiece& promotedPiece, QWidget* parent = nullptr);
 };

@@ -17,9 +17,9 @@ struct ChessPiece
     Chess::Piece piece = Chess::Piece::None;
     Chess::Color color = Chess::Color::Light;
 
-	bool hasMoved = false;
+    bool hasMoved = false;
 
-	bool operator==(const ChessPiece& chessPiece) const;
+    bool operator==(const ChessPiece& chessPiece) const;
 };
 
 struct ChessPieceHash

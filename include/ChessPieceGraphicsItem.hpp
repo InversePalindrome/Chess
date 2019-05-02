@@ -19,9 +19,9 @@ public:
 
     enum { Type = UserType + 1 };
 
-	ChessPiece getChessPiece();
-	void setChessPiece(const ChessPiece& chessPiece);
+    ChessPiece getChessPiece();
+    void setChessPiece(const ChessPiece& chessPiece);
 
 private:
-	ChessPiece chessPiece;
+    ChessPiece chessPiece;
 };

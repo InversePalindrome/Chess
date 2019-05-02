@@ -10,7 +10,7 @@ https://inversepalindrome.com/
 
 ChessPieceGraphicsItem::ChessPieceGraphicsItem(const ChessPiece& chessPiece, const QPixmap& pixmap, QGraphicsItem* parent) :
     QGraphicsPixmapItem(pixmap, parent),
-	chessPiece(chessPiece)
+    chessPiece(chessPiece)
 {
 }
 
@@ -21,10 +21,10 @@ int ChessPieceGraphicsItem::type() const
 
 ChessPiece ChessPieceGraphicsItem::getChessPiece()
 {
-	return chessPiece;
+    return chessPiece;
 }
 
 void ChessPieceGraphicsItem::setChessPiece(const ChessPiece& chessPiece)
 {
-	this->chessPiece = chessPiece;
+    this->chessPiece = chessPiece;
 }

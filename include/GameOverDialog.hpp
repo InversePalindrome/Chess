@@ -14,12 +14,12 @@ https://inversepalindrome.com/
 
 class GameOverDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GameOverDialog(Chess::EndResult result, QWidget* parent = nullptr);
+    explicit GameOverDialog(Chess::EndResult result, QWidget* parent = nullptr);
 
 signals:
-	void transitionToMenu();
-	void playAgain();
+    void transitionToMenu();
+    void playAgain();
 };

@@ -17,5 +17,5 @@ namespace Chess
 
     enum class Piece { None, Pawn, Knight, Bishop, Rook, King, Queen };
     enum class Color { Light, Dark };
-	enum class EndResult { LightWon, DarkWon, Stalemate };
+    enum class EndResult { LightWon, DarkWon, Stalemate };
 }

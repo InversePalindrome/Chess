@@ -13,9 +13,9 @@ Chess::Position Chess::getChessPositionAt(const QPointF& position)
 {
     QRectF chessRect;
     chessRect.setSize({ Chess::RANKS * Chess::SQUARE_SIZE, Chess::FILES * Chess::SQUARE_SIZE });
-    chessRect.moveCenter({0, 0});
+    chessRect.moveCenter({ 0, 0 });
 
-    if(!chessRect.contains(position))
+    if (!chessRect.contains(position))
     {
         return {};
     }
@@ -24,8 +24,8 @@ Chess::Position Chess::getChessPositionAt(const QPointF& position)
              static_cast<int>((position.x() + chessRect.width() / 2) / Chess::SQUARE_SIZE) };
 }
 
-QPointF Chess::getGraphicsPosition(const QRectF& sceneRect, const Chess::Position& chessPosition)
+QPointF Chess::getGraphicsPosition(const QRectF & sceneRect, const Chess::Position & chessPosition)
 {
-	return { sceneRect.left() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * chessPosition.file,
-			sceneRect.top() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * chessPosition.rank };
+    return { sceneRect.left() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * chessPosition.file,
+            sceneRect.top() + Chess::SQUARE_SIZE / 2.0 + Chess::SQUARE_SIZE * chessPosition.rank };
 }

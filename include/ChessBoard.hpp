@@ -15,9 +15,9 @@ https://inversepalindrome.com/
 
 namespace Chess
 {
-	template<typename T>
-	using Board = std::array<std::array<T, Chess::RANKS>, Chess::FILES>;
+    template<typename T>
+    using Board = std::array<std::array<T, Chess::RANKS>, Chess::FILES>;
 
-	Board<ChessPiece> getInitialBoard();
+    Board<ChessPiece> getInitialBoard();
 }
 

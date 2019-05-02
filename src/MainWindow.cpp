@@ -12,7 +12,7 @@ https://inversepalindrome.com/
 #include "PromotionDialog.hpp"
 
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
@@ -23,14 +23,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->chessView->setRenderHint(QPainter::Antialiasing);
     ui->chessView->setMouseTracking(true);
     ui->chessView->show();
-	ui->toolBar->addAction(QIcon(":/Resources/HomeIcon.png"), "Menu", [this]()
-	{
-		transitionToMenu();
-	});
+    ui->toolBar->addAction(QIcon(":/Resources/HomeIcon.png"), "Menu", [this]()
+        {
+            transitionToMenu();
+        });
     connect(ui->playButton, &QPushButton::clicked, [this]()
-    {
-       transitionToGame();
-    });
+        {
+            transitionToGame();
+        });
 }
 
 MainWindow::~MainWindow()
@@ -52,23 +52,23 @@ void MainWindow::transitionToGame()
     ui->chessView->setScene(chessScene);
 
     connect(chessScene, &ChessScene::openPromotionDialog, [this](auto & piece)
-    {
-        auto* dialog = new PromotionDialog(piece, this);
-        dialog->exec();
-    });
+        {
+            auto* dialog = new PromotionDialog(piece, this);
+            dialog->exec();
+        });
     connect(chessScene, &ChessScene::gameEnded, [this](auto result)
-    {
-        auto* dialog = new GameOverDialog(result, this);
-        connect(dialog, &GameOverDialog::transitionToMenu, [this]()
         {
-             transitionToMenu();
+            auto* dialog = new GameOverDialog(result, this);
+            connect(dialog, &GameOverDialog::transitionToMenu, [this]()
+                {
+                    transitionToMenu();
+                });
+            connect(dialog, &GameOverDialog::playAgain, [this]()
+                {
+                    transitionToGame();
+                });
+            dialog->exec();
         });
-        connect(dialog, &GameOverDialog::playAgain, [this]()
-        {
-              transitionToGame();
-        });
-        dialog->exec();
-    });
 
     ui->stackWidget->setCurrentIndex(1);
     ui->toolBar->setVisible(true);

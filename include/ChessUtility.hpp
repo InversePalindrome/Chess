@@ -16,5 +16,5 @@ https://inversepalindrome.com/
 namespace Chess
 {
     Chess::Position getChessPositionAt(const QPointF& position);
-	QPointF getGraphicsPosition(const QRectF& sceneRect, const Chess::Position& chessPosition);
+    QPointF getGraphicsPosition(const QRectF& sceneRect, const Chess::Position& chessPosition);
 }
