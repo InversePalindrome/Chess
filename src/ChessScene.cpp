@@ -9,6 +9,7 @@ https://inversepalindrome.com/
 #include "ChessUtility.hpp"
 #include "ChessResources.hpp"
 #include "ChessMoveValidation.hpp"
+#include "ChessMoveGeneration.hpp"
 #include "ChessBoardGraphicsItem.hpp"
 
 #include <QGraphicsSceneMouseEvent>
@@ -66,7 +67,7 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         const auto newPos = Chess::getChessPositionAt(event->scenePos());
         auto movingPiece = chessBoard[oldPos.rank][oldPos.file];
 
-        if (canMove(movingPiece, oldPos, newPos) && !isKingInCheck(movingPiece, oldPos, newPos))
+        if (canMove(movingPiece, oldPos, newPos))
         {
             movingPiece.hasMoved = true;
 
@@ -100,34 +101,10 @@ void ChessScene::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 
 bool ChessScene::canMove(const ChessPiece & movingPiece, const Chess::Position & oldPos, const Chess::Position & newPos) const
 {
-    if ((movingPiece.piece == Chess::Piece::King && Chess::isCastlingMoveValid(chessBoard, oldPos, newPos)) ||
-        (movingPiece.piece == Chess::Piece::Pawn && Chess::isEnPassantValid(chessBoard,
-            chessHistory, movingPiece.color, oldPos, newPos)))
-    {
-        return true;
-    }
-    if (!Chess::isPieceMoveValid(chessBoard, movingPiece.color, newPos))
-    {
-        return false;
-    }
+    const auto validMoves = Chess::getPieceMoves(chessBoard, movingPiece, oldPos);
 
-    switch (movingPiece.piece)
-    {
-    case Chess::Piece::Pawn:
-        return Chess::isPawnMoveValid(chessBoard, movingPiece.color, movingPiece.hasMoved, oldPos, newPos);
-    case Chess::Piece::Knight:
-        return Chess::isKnightMoveValid(oldPos, newPos);
-    case Chess::Piece::Bishop:
-        return Chess::isBishopMoveValid(chessBoard, oldPos, newPos);
-    case Chess::Piece::Rook:
-        return Chess::isRookMoveValid(chessBoard, oldPos, newPos);
-    case Chess::Piece::Queen:
-        return Chess::isQueenMoveValid(chessBoard, oldPos, newPos);
-    case Chess::Piece::King:
-        return Chess::isKingMoveValid(oldPos, newPos);
-    }
-
-    return false;
+    return std::find(std::begin(validMoves), std::end(validMoves), newPos) != std::end(validMoves) &&
+        !leavesKingInCheck(movingPiece, oldPos, newPos);
 }
 
 bool ChessScene::isKingInCheck(Chess::Color kingColor) const
@@ -142,7 +119,7 @@ bool ChessScene::isKingInCheck(Chess::Color kingColor) const
     }
 }
 
-bool ChessScene::isKingInCheck(const ChessPiece & movingPiece, const Chess::Position & oldPos, const Chess::Position & newPos) const
+bool ChessScene::leavesKingInCheck(const ChessPiece & movingPiece, const Chess::Position & oldPos, const Chess::Position & newPos) const
 {
     auto testChessBoard = chessBoard;
     testChessBoard[oldPos.rank][oldPos.file] = ChessPiece{};

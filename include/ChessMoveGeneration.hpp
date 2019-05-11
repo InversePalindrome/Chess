@@ -32,4 +32,7 @@ namespace Chess
 
     std::vector<Chess::Position> getKingMoves(const Chess::Board<ChessPiece>& chessBoard,
         Chess::Color color, const Chess::Position& pos);
+
+    std::vector<Chess::Position> getPieceMoves(const Chess::Board<ChessPiece>& chessBoard,
+        const ChessPiece& movingPiece, const Chess::Position& pos);
 }

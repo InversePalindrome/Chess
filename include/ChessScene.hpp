@@ -32,7 +32,7 @@ protected:
 private:
     bool canMove(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
     bool isKingInCheck(Chess::Color kingColor) const;
-    bool isKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
+    bool leavesKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
 
     void manageHistory(const ChessPiece& droppedPiece, const ChessPiece& promotedPiece,
         const Chess::Position& oldPos, const Chess::Position& newPos);

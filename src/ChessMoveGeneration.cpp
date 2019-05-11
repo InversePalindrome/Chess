@@ -303,3 +303,33 @@ std::vector<Chess::Position> Chess::getKingMoves(const Chess::Board<ChessPiece> 
 
     return moves;
 }
+
+std::vector<Chess::Position> Chess::getPieceMoves(const Chess::Board<ChessPiece> &
+    chessBoard, const ChessPiece & movingPiece, const Chess::Position & pos)
+{
+    std::vector<Chess::Position> moves;
+
+    switch (movingPiece.piece)
+    {
+    case Chess::Piece::Pawn:
+        moves = Chess::getPawnMoves(chessBoard, movingPiece.color, pos, movingPiece.hasMoved);
+        break;
+    case Chess::Piece::Knight:
+        moves = Chess::getKnightMoves(chessBoard, movingPiece.color, pos);
+        break;
+    case Chess::Piece::Bishop:
+        moves = Chess::getBishopMoves(chessBoard, movingPiece.color, pos);
+        break;
+    case Chess::Piece::Rook:
+        moves = Chess::getRookMoves(chessBoard, movingPiece.color, pos);
+        break;
+    case Chess::Piece::Queen:
+        moves = Chess::getQueenMoves(chessBoard, movingPiece.color, pos);
+        break;
+    case Chess::Piece::King:
+        moves = Chess::getKingMoves(chessBoard, movingPiece.color, pos);
+        break;
+    }
+
+    return moves;
+}
