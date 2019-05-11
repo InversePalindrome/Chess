@@ -201,26 +201,7 @@ bool Chess::canBeCaptured(const Chess::Board<ChessPiece>& chessBoard,
         }
     }
 
-    if (pieceColor == Chess::Color::Dark)
-    {
-        if (piecePos.rank < Chess::RANKS - 1 && piecePos.file > 0)
-        {
-            if (const auto currPiece = chessBoard[piecePos.rank + 1][piecePos.file - 1];
-                currPiece.color != pieceColor && currPiece.piece == Chess::Piece::Pawn)
-            {
-                return true;
-            }
-        }
-        else if (piecePos.rank < Chess::RANKS - 1 && piecePos.file < Chess::FILES - 1)
-        {
-            if (const auto currPiece = chessBoard[piecePos.rank + 1][piecePos.file + 1];
-                currPiece.color != pieceColor && currPiece.piece == Chess::Piece::Pawn)
-            {
-                return true;
-            }
-        }
-    }
-    else
+    if (pieceColor == Chess::Color::Light)
     {
         if (piecePos.rank > 0 && piecePos.file > 0)
         {
@@ -230,9 +211,28 @@ bool Chess::canBeCaptured(const Chess::Board<ChessPiece>& chessBoard,
                 return true;
             }
         }
-        else if (piecePos.rank > 0 && piecePos.file < Chess::FILES - 1)
+        if (piecePos.rank > 0 && piecePos.file < Chess::FILES - 1)
         {
             if (const auto currPiece = chessBoard[piecePos.rank - 1][piecePos.file + 1];
+                currPiece.color != pieceColor && currPiece.piece == Chess::Piece::Pawn)
+            {
+                return true;
+            }
+        }
+    }
+    else
+    {
+        if (piecePos.rank < Chess::RANKS - 1 && piecePos.file > 0)
+        {
+            if (const auto currPiece = chessBoard[piecePos.rank + 1][piecePos.file - 1];
+                currPiece.color != pieceColor && currPiece.piece == Chess::Piece::Pawn)
+            {
+                return true;
+            }
+        }
+        if (piecePos.rank < Chess::RANKS - 1 && piecePos.file < Chess::FILES - 1)
+        {
+            if (const auto currPiece = chessBoard[piecePos.rank + 1][piecePos.file + 1];
                 currPiece.color != pieceColor && currPiece.piece == Chess::Piece::Pawn)
             {
                 return true;
