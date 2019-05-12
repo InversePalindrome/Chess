@@ -282,7 +282,104 @@ bool Chess::hasValidMoves(const Chess::Board<ChessPiece>& chessBoard,
     return false;
 }
 
-bool Chess::isPawnPromoted(const Chess::Position& newPos)
+Chess::CastlingMode Chess::isCastling(const Chess::Board<ChessPiece>& chessBoard, const ChessPiece& movingPiece,
+    const Chess::Position& oldPos, const Chess::Position& newPos)
 {
-    return newPos.rank == 0 || newPos.rank == Chess::RANKS - 1;
+    if (movingPiece.piece == Chess::Piece::King && !movingPiece.hasMoved)
+    {
+        if (movingPiece.color == Chess::Color::Light)
+        {
+            if (const auto possibleRook = chessBoard[Chess::RANKS - 1][Chess::FILES - 1];
+                oldPos.file == newPos.file - 2 &&
+                possibleRook.piece == Chess::Piece::Rook && possibleRook.color == movingPiece.color &&
+                !possibleRook.hasMoved && chessBoard[Chess::RANKS - 1][Chess::FILES - 2].piece == Chess::Piece::None
+                && chessBoard[Chess::RANKS - 1][Chess::FILES - 3].piece == Chess::Piece::None
+                && !canBeCaptured(chessBoard, movingPiece.color, { Chess::RANKS - 1, Chess::FILES - 2 })
+                && !canBeCaptured(chessBoard, movingPiece.color, { Chess::RANKS - 1, Chess::FILES - 3 }))
+            {
+                return Chess::CastlingMode::Short;
+            }
+            else if (const auto possibleRook = chessBoard[Chess::RANKS - 1][0];
+                newPos.file == oldPos.file - 2 &&
+                possibleRook.piece == Chess::Piece::Rook && possibleRook.color == movingPiece.color &&
+                !possibleRook.hasMoved && chessBoard[Chess::RANKS - 1][1].piece == Chess::Piece::None
+                && chessBoard[Chess::RANKS - 1][2].piece == Chess::Piece::None &&
+                chessBoard[Chess::RANKS - 1][3].piece == Chess::Piece::None
+                && !canBeCaptured(chessBoard, movingPiece.color, { Chess::RANKS - 1, 1 })
+                && !canBeCaptured(chessBoard, movingPiece.color, { Chess::RANKS - 1, 2 })
+                && !canBeCaptured(chessBoard, movingPiece.color, { Chess::RANKS - 1, 3 }))
+            {
+                return Chess::CastlingMode::Long;
+            }
+        }
+        else
+        {
+            if (const auto possibleRook = chessBoard[0][Chess::FILES - 1];
+                oldPos.file == newPos.file - 2 &&
+                possibleRook.piece == Chess::Piece::Rook && possibleRook.color == movingPiece.color &&
+                !possibleRook.hasMoved && chessBoard[0][Chess::FILES - 2].piece == Chess::Piece::None
+                && chessBoard[0][Chess::FILES - 3].piece == Chess::Piece::None
+                && !canBeCaptured(chessBoard, movingPiece.color, { 0, Chess::FILES - 2 })
+                && !canBeCaptured(chessBoard, movingPiece.color, { 0, Chess::FILES - 3 }))
+            {
+                return Chess::CastlingMode::Short;
+            }
+            else if (const auto possibleRook = chessBoard[0][0];
+                newPos.file == oldPos.file - 2 &&
+                possibleRook.piece == Chess::Piece::Rook && possibleRook.color == movingPiece.color &&
+                !possibleRook.hasMoved && chessBoard[0][1].piece == Chess::Piece::None
+                && chessBoard[0][2].piece == Chess::Piece::None && chessBoard[0][3].piece == Chess::Piece::None
+                && !canBeCaptured(chessBoard, movingPiece.color, { 0, 1 })
+                && !canBeCaptured(chessBoard, movingPiece.color, { 0, 2 })
+                && !canBeCaptured(chessBoard, movingPiece.color, { 0, 3 }))
+            {
+                return Chess::CastlingMode::Long;
+            }
+        }
+    }
+
+    return Chess::CastlingMode::None;
+}
+
+bool Chess::isEnPassant(const Chess::Board<ChessPiece>& chessBoard, const
+    std::vector<Chess::Move>& moveHistory, const ChessPiece& movingPiece,
+    const Chess::Position& oldPos, const Chess::Position& newPos)
+{
+    if (!std::empty(moveHistory) && movingPiece.piece == Chess::Piece::Pawn)
+    {
+        const auto& lastMove = moveHistory.back();
+
+        if (lastMove.movingPiece.piece == Chess::Piece::Pawn)
+        {
+            if (movingPiece.color == Chess::Color::Light)
+            {
+                return lastMove.newPos.rank - lastMove.oldPos.rank == 2
+                    && oldPos.rank - newPos.rank == 1 && newPos.file == lastMove.newPos.file;
+            }
+            else
+            {
+                return lastMove.oldPos.rank - lastMove.newPos.rank == 2
+                    && newPos.rank - oldPos.rank == 1 && newPos.file == lastMove.newPos.file;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool Chess::isPawnPromoted(const ChessPiece& movingPiece, const Chess::Position& newPos)
+{
+    if (movingPiece.piece == Chess::Piece::Pawn)
+    {
+        if (movingPiece.color == Chess::Color::Light)
+        {
+            return newPos.rank == 0;
+        }
+        else
+        {
+            return newPos.rank == Chess::RANKS - 1;
+        }
+    }
+
+    return false;
 }

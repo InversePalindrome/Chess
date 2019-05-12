@@ -7,10 +7,10 @@ https://inversepalindrome.com/
 
 #pragma once
 
+#include "ChessMove.hpp"
 #include "ChessBoard.hpp"
 #include "ChessPosition.hpp"
 #include "ChessConstants.hpp"
-#include "ChessTransition.hpp"
 #include "ChessPieceGraphicsItem.hpp"
 
 #include <QGraphicsScene>
@@ -34,8 +34,18 @@ private:
     bool isKingInCheck(Chess::Color kingColor) const;
     bool leavesKingInCheck(const ChessPiece& movingPiece, const Chess::Position& oldPos, const Chess::Position& newPos) const;
 
-    void manageHistory(const ChessPiece& droppedPiece, const ChessPiece& promotedPiece,
+    void addMove(const ChessPiece& movingPiece,
         const Chess::Position& oldPos, const Chess::Position& newPos);
+
+    void handleShortCastling(ChessPiece& movingPiece, ChessPieceGraphicsItem* movingGraphicsPiece,
+        const Chess::Position& oldPos, const Chess::Position& newPos);
+    void handleLongCastling(ChessPiece& movingPiece, ChessPieceGraphicsItem* movingGraphicsPiece, const Chess::Position& oldPos,
+        const Chess::Position& newPos);
+    void handleEnPassant(ChessPiece& movingPiece, ChessPieceGraphicsItem* movingGraphicsPiece,
+        const Chess::Position& oldPos, const Chess::Position& newPos);
+    void handleRegularMove(ChessPiece& movingPiece, ChessPieceGraphicsItem* movingGraphicsPiece,
+        const Chess::Position& oldPos, const Chess::Position& newPos);
+
     void manageDrop(const ChessPiece& movingPiece, const Chess::Position& newPos);
     void managePromotion(ChessPiece& movingPiece, ChessPieceGraphicsItem* graphicsPiece,
         const Chess::Position& newPos);
@@ -45,12 +55,16 @@ private:
 
     void switchPlayer();
 
-    ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& position);
+    void movePiece(ChessPiece& movingPiece, ChessPieceGraphicsItem* movingGraphicsPiece,
+        const Chess::Position& oldPos, const Chess::Position& newPos);
+
+    ChessPieceGraphicsItem* getGraphicsPiece(const QPointF& pos);
+    void removeGraphicsPiece(const Chess::Position& pos);
 
     Chess::Board<ChessPiece> chessBoard;
     Chess::Position lightKingPosition;
     Chess::Position darkKingPosition;
-    std::vector<Chess::Transition> chessHistory;
+    std::vector<Chess::Move> moveHistory;
     Chess::Color currentPlayer;
 
     QPointF sourcePosition;
